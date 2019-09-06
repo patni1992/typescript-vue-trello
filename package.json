@@ -1,0 +1,25 @@
+{
+  "name": "typescript-vue-trello",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patni1992/typescript-vue-trello.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patni1992/typescript-vue-trello/issues"
+  },
+  "homepage": "https://github.com/patni1992/typescript-vue-trello#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.18.1"
+  }
+}
