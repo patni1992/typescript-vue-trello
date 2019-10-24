@@ -13,6 +13,32 @@ export class User extends BaseModel {
     isAdmin = false;
     profileImage?: string;
 
+    static async exist(email: User['email'], userName: User['userName']): Promise<boolean> {
+        const user = await User.query()
+            .where('email', email)
+            .where('user_name', userName)
+            .first();
+
+        return user ? true : false;
+    }
+
+    static get jsonSchema(): object {
+        return {
+            type: 'object',
+            required: ['firstName', 'lastName', 'email', 'userName', 'password'],
+
+            properties: {
+                id: { type: 'integer' },
+                firstName: { type: 'string', minLength: 1, maxLength: 255 },
+                lastName: { type: 'string', minLength: 1, maxLength: 255 },
+                email: { type: 'string', format: 'email', maxLength: 255 },
+                password: { type: 'password', minLength: 6, maxLength: 255 },
+                isAdmin: { type: 'boolean' },
+                profileImage: { type: 'string', minLength: 1, maxLength: 255 },
+            },
+        };
+    }
+
     private isBcryptHash(str): boolean {
         const REGEXP = /^\$2[ayb]\$[0-9]{2}\$[A-Za-z0-9./]{53}$/;
         return REGEXP.test(str);
