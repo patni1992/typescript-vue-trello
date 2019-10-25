@@ -6,6 +6,14 @@ import * as knexConfig from '../../../knexfile';
 export const knex = Knex(knexConfig.test);
 Model.knex(knex);
 
+const userData = {
+    firstName: 'John',
+    lastName: 'Doe',
+    password: '123456',
+    userName: 'john-doe',
+    email: 'john-doe@hotmail.com',
+};
+
 beforeEach(async () => {
     await knex.migrate.rollback();
     return await knex.migrate.latest();
@@ -13,13 +21,7 @@ beforeEach(async () => {
 
 describe('User model', () => {
     test('Password should be set after creating a new user', async done => {
-        const someone = await User.query().insert({
-            firstName: 'John',
-            lastName: 'Doe',
-            password: '123456',
-            userName: 'john-doe',
-            email: 'john-doe@hotmail.com',
-        });
+        const someone = await User.query().insert(userData);
         const vertifiedPassword = await someone.verifyPassword('123456');
         const wrongPassword = await someone.verifyPassword('wrong password');
         expect(someone.password).toBeTruthy();
@@ -29,13 +31,7 @@ describe('User model', () => {
     });
 
     test('Password should only be updated if a new one is set', async done => {
-        const someone = await User.query().insert({
-            firstName: 'John',
-            lastName: 'Doe',
-            password: '1234567',
-            userName: 'john-doe',
-            email: 'john-doe@hotmail.com',
-        });
+        const someone = await User.query().insert(userData);
         const updatedPerson = await User.query().patchAndFetchById(someone.id, { firstName: 'Patrik' });
 
         expect(someone.password).toEqual(updatedPerson.password);
@@ -62,6 +58,16 @@ describe('User model', () => {
         } catch (e) {
             expect(e.message).toBe('password: is a required property');
         }
+
+        done();
+    });
+
+    test('Hide hidden fields when converting to JSON', async done => {
+        const user = await User.query().insert(userData);
+        const keys = Object.keys(user.toJSON());
+
+        expect(user.hiddenFields).toEqual(['password', 'createdAt', 'updatedAt', 'isAdmin']);
+        user.hiddenFields.forEach(value => expect(keys).not.toContain(value));
 
         done();
     });
