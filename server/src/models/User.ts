@@ -1,4 +1,5 @@
 import { BaseModel } from './BaseModel';
+import { pick, omit } from 'lodash';
 import * as Bcrypt from 'bcrypt';
 
 export class User extends BaseModel {
@@ -12,6 +13,10 @@ export class User extends BaseModel {
     password?: string;
     isAdmin = false;
     profileImage?: string;
+
+    get hiddenFields(): string[] {
+        return ['password', 'createdAt', 'updatedAt', 'isAdmin'];
+    }
 
     static async exist(email: User['email'], userName: User['userName']): Promise<boolean> {
         const user = await User.query()
@@ -75,5 +80,10 @@ export class User extends BaseModel {
 
     verifyPassword(password): Promise<any> {
         return Bcrypt.compare(password, this.password);
+    }
+
+    $formatJson(jsonRaw): Record<string, any> {
+        super.$formatJson(jsonRaw);
+        return omit(jsonRaw, this.hiddenFields);
     }
 }
