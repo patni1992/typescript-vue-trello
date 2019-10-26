@@ -20,8 +20,8 @@ export class User extends BaseModel {
 
     static async exist(email: User['email'], userName: User['userName']): Promise<boolean> {
         const user = await User.query()
-            .where('email', email)
-            .where('user_name', userName)
+            .where('email', email || '')
+            .orWhere('userName', userName || '')
             .first();
 
         return user ? true : false;
