@@ -44,7 +44,7 @@ export class User extends BaseModel {
         };
     }
 
-    private isBcryptHash(str): boolean {
+    isBcryptHash(str): boolean {
         const REGEXP = /^\$2[ayb]\$[0-9]{2}\$[A-Za-z0-9./]{53}$/;
         return REGEXP.test(str);
     }

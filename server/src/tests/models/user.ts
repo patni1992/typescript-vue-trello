@@ -22,11 +22,8 @@ beforeEach(async () => {
 describe('User model', () => {
     test('Password should be set after creating a new user', async done => {
         const someone = await User.query().insert(userData);
-        const vertifiedPassword = await someone.verifyPassword('123456');
-        const wrongPassword = await someone.verifyPassword('wrong password');
-        expect(someone.password).toBeTruthy();
-        expect(vertifiedPassword).toBe(true);
-        expect(wrongPassword).toBe(false);
+
+        expect(someone.isBcryptHash(someone.password)).toBe(true);
         done();
     });
 
