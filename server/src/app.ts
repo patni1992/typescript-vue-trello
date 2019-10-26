@@ -5,8 +5,8 @@ import * as Knex from 'knex';
 import { Model } from 'objection';
 import * as knexConfig from '../knexfile';
 import * as bodyParser from 'body-parser';
-import { errorHandler } from './middlewares/errorHandler';
-const app = express();
+import { errorHandler } from './middlewares/errorHandler';;
+export const app = express();
 
 const dbENV = process.env.NODE_ENV || 'development';
 
@@ -19,8 +19,10 @@ Model.knex(knex);
 
 new Routes(app);
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
 app.use(errorHandler);
 
-export default app;
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) =>
+    res.status(404).send({ message: 'Route' + req.url + ' Not found.' }),
+);
+
+export const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
