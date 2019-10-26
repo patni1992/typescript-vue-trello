@@ -1,4 +1,5 @@
 require('ts-node/register');
+const { knexSnakeCaseMappers } = require('objection');
 
 module.exports = {
     development: {
@@ -22,5 +23,7 @@ module.exports = {
         migrations: {
             directory: './db/migrations',
         },
+
+        ...knexSnakeCaseMappers(),
     },
 };
