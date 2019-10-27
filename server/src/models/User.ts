@@ -1,6 +1,7 @@
 import { BaseModel } from './BaseModel';
 import { pick, omit } from 'lodash';
 import * as Bcrypt from 'bcrypt';
+import { Pojo } from 'objection';
 
 export class User extends BaseModel {
     static tableName = 'users';
@@ -8,8 +9,8 @@ export class User extends BaseModel {
     readonly id!: number;
     firstName?: string;
     lastName?: string;
-    email?: string;
     userName?: string;
+    email?: string;
     password?: string;
     isAdmin = false;
     profileImage?: string;
@@ -18,13 +19,11 @@ export class User extends BaseModel {
         return ['password', 'createdAt', 'updatedAt', 'isAdmin'];
     }
 
-    static async exist(email: User['email'], userName: User['userName']): Promise<boolean> {
-        const user = await User.query()
+    static async getUser(email: User['email'], userName: User['userName']): Promise<User | undefined> {
+        return await User.query()
             .where('email', email || '')
-            .orWhere('userName', userName || '')
+            .orWhere('user_name', userName || '')
             .first();
-
-        return user ? true : false;
     }
 
     static get jsonSchema(): object {
@@ -78,11 +77,15 @@ export class User extends BaseModel {
         return this.generateHash();
     }
 
-    verifyPassword(password): Promise<any> {
-        return Bcrypt.compare(password, this.password);
+    verifyPassword(password): Promise<boolean> {
+        if (this.password) {
+            return Bcrypt.compare(password, this.password);
+        } else {
+            throw new Error('password must not be empty');
+        }
     }
 
-    $formatJson(jsonRaw): Record<string, any> {
+    $formatJson(jsonRaw): Pojo {
         super.$formatJson(jsonRaw);
         return omit(jsonRaw, this.hiddenFields);
     }
