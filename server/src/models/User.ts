@@ -1,7 +1,8 @@
 import { BaseModel } from './BaseModel';
 import { pick, omit } from 'lodash';
 import * as Bcrypt from 'bcrypt';
-import { Pojo } from 'objection';
+import { Pojo, Model } from 'objection';
+import { Board } from './Board';
 
 export class User extends BaseModel {
     static tableName = 'users';
@@ -14,10 +15,22 @@ export class User extends BaseModel {
     password?: string;
     isAdmin = false;
     profileImage?: string;
+    boards?: Array<Board>;
 
     get hiddenFields(): string[] {
         return ['password', 'createdAt', 'updatedAt', 'isAdmin'];
     }
+
+    static relationMappings = {
+        boards: {
+            relation: Model.HasManyRelation,
+            modelClass: Board,
+            join: {
+                from: 'users.id',
+                to: 'boards.user_id',
+            },
+        },
+    };
 
     static async getUser(email: User['email'], userName: User['userName']): Promise<User | undefined> {
         return await User.query()
