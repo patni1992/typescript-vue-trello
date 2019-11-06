@@ -8,12 +8,12 @@ describe('AppButton', () => {
         wrapper = shallowMount(AppButton);
     });
 
-    it('is called', () => {
+    test('is called', () => {
         expect(wrapper.name()).toBe('AppButton');
         expect(wrapper.isVueInstance()).toBeTruthy();
     });
 
-    it('emit a click event', () => {
+    test('emit a click event', () => {
         const click = jest.fn();
         wrapper = shallowMount(AppButton, {
             listeners: {
