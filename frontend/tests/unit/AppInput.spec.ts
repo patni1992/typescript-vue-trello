@@ -25,6 +25,7 @@ describe('AppButton', () => {
         });
         expect(wrapper.find('input').attributes().type).toBe('password');
     });
+
     test('render placeholder', () => {
         wrapper = shallowMount(AppInput, {
             propsData: {
@@ -33,14 +34,8 @@ describe('AppButton', () => {
         });
         expect(wrapper.find('input').attributes().placeholder).toBe('Nice input');
     });
-    
-    test('changing input value emits input event', () => {
-        wrapper = shallowMount(AppInput, {
-            propsData: {
-                placeholder: 'Nice input',
-            },
-        });
 
+    test('changing input value emits input event', () => {
         wrapper.find('input').setValue('hello 392439');
 
         expect(wrapper.emitted().input[0]).toEqual(['hello 392439']);
