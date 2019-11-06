@@ -1,5 +1,5 @@
 export interface UserToken {
-    id: string;
+    id: number;
     email: string;
     userName: string;
     iat: number;
