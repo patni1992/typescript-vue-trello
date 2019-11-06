@@ -102,3 +102,4 @@ yarn-error.log
 # End of https://www.gitignore.io/api/node,vuejs
 
 .DS_Store
+.vscode
