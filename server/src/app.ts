@@ -6,6 +6,7 @@ import { Model } from 'objection';
 import * as knexConfig from '../knexfile';
 import * as bodyParser from 'body-parser';
 import { errorHandler } from './middlewares/errorHandler';
+import 'express-async-errors';
 export const app = express();
 
 const dbENV = process.env.NODE_ENV || 'development';
@@ -21,8 +22,8 @@ new Routes(app);
 
 app.use(errorHandler);
 
-app.use((req: express.Request, res: express.Response, next: express.NextFunction) =>
-    res.status(404).send({ message: 'Route' + req.url + ' Not found.' }),
-);
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    return res.status(404).send({ message: `${req.method} route ${req.url} not found.` });
+});
 
 export const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
