@@ -15,7 +15,7 @@
                     <app-input type="text" id="user_name" placeholder="Username" />
                     <app-input type="password" id="user_pass" placeholder="Password" />
                     <app-input type="password" id="user_pass_repeat" placeholder="Confirm password" />
-                    <app-button variant="primary" expanded>
+                    <app-button @click="register" id="registerButton" variant="primary" expanded>
                         Sign up
                     </app-button>
                 </form>
@@ -71,19 +71,11 @@ export default Vue.extend({
             },
         };
     },
-    methods: {
-        login() {
-            console.log(this.loginForm);
-        },
-        guest() {
-            this.$router.push({ name: 'boards' });
-        },
-        signUp() {
-            alert('this bitche sign up ');
-        },
-    },
+    methods: {},
     props: {
-        msg: String,
+        login: Function,
+        guest: Function,
+        register: Function,
     },
 });
 </script>

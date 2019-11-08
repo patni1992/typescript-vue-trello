@@ -3,33 +3,41 @@ import LoginForm from '@/components/LoginForm.vue';
 
 describe('LoginForm', () => {
     let wrapper: Wrapper<any>;
-    const push = jest.fn();
+    let login: jest.Mock;
+    let guest: jest.Mock;
+    let register: jest.Mock;
+
     beforeEach(() => {
-        const $router = {
-            push,
-        };
+        login = jest.fn();
+        guest = jest.fn();
+        register = jest.fn();
         wrapper = shallowMount(LoginForm, {
-            mocks: {
-                $router,
+            propsData: {
+                login,
+                guest,
+                register,
             },
         });
     });
-    test('Call login method when login button is clicked', () => {
-        const spyLogin = jest.spyOn(wrapper.vm, 'login');
-        wrapper.setMethods({ login: spyLogin });
+
+    test('is called', () => {
+        expect(wrapper.name()).toBe('LoginForm');
+        expect(wrapper.isVueInstance()).toBeTruthy();
+    });
+
+    test('call login method when login button is clicked', () => {
         wrapper.find('#loginButton').vm.$emit('click');
 
-        expect(spyLogin).toBeCalledTimes(1);
+        expect(login).toBeCalledTimes(1);
     });
-    test('Call guest method when guest button is clicked', () => {
-        const guest = jest.spyOn(wrapper.vm, 'guest');
-        wrapper.setMethods({ guest });
-        wrapper.find('#guestButton').vm.$emit('click');
 
+    test('call guest method when guest button is clicked', () => {
+        wrapper.find('#guestButton').vm.$emit('click');
         expect(guest).toBeCalledTimes(1);
     });
-    test('guest redirect to boards page', () => {
-        wrapper.vm.guest();
-        expect(push).toHaveBeenCalledWith({ name: 'boards' });
+    test('call register method when register button is clicked', () => {
+        wrapper.find('#registerButton').vm.$emit('click');
+
+        expect(register).toBeCalledTimes(1);
     });
 });
