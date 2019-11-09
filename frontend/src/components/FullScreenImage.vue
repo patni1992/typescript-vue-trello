@@ -7,11 +7,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-export default Vue.extend({
+@Component({
     name: 'FullScreenImage',
-});
+})
+export default class FullScreenImage extends Vue {}
 </script>
 
 <style scoped lang="scss">

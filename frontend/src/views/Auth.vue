@@ -10,23 +10,24 @@
 import FullScreenImage from '@/components/FullScreenImage.vue';
 import LoginForm from '@/components/LoginForm.vue';
 import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
 
-export default Vue.extend({
-    name: 'auth',
+@Component({
     components: {
         FullScreenImage,
         LoginForm,
     },
-    methods: {
-        login() {
-            console.log('login');
-        },
-        guest() {
-            console.log('lguest');
-        },
-        register() {
-            console.log('register');
-        },
-    },
-});
+    name: 'auth',
+})
+export default class Auth extends Vue {
+    login() {
+        console.log('login');
+    }
+    guest() {
+        console.log('lguest');
+    }
+    register() {
+        console.log('register');
+    }
+}
 </script>

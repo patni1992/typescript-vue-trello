@@ -16,15 +16,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-export default Vue.extend({
+@Component({
     name: 'AppButton',
-    props: {
-        variant: String,
-        expanded: Boolean,
-    },
-});
+})
+export default class AppButton extends Vue {
+    @Prop(String) readonly variant!: string;
+    @Prop(Boolean) readonly expanded!: boolean;
+    @Prop([String, Number]) readonly value!: string | boolean;
+}
 </script>
 
 <style scoped lang="scss">

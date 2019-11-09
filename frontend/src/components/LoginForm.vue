@@ -53,31 +53,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import AppButton from '@/components/AppButton.vue';
 import AppInput from '@/components/AppInput.vue';
-export default Vue.extend({
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+@Component({
     name: 'LoginForm',
     components: {
         AppButton,
         AppInput,
     },
-    data() {
-        return {
-            showLogin: true,
-            loginForm: {
-                userName: '',
-                password: '',
-            },
-        };
-    },
-    methods: {},
-    props: {
-        login: Function,
-        guest: Function,
-        register: Function,
-    },
-});
+})
+export default class LoginForm extends Vue {
+    @Prop(Function) login!: () => void;
+    @Prop(Function) guest!: () => void;
+    @Prop(Function) register!: () => void;
+
+    showLogin = true;
+    loginForm = {
+        userName: '',
+        password: '',
+    };
+}
 </script>
 
 <style scoped lang="scss">

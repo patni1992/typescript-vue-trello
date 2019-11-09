@@ -1,36 +1,20 @@
 <template>
-    <input
-        class="input"
-        :type="type"
-        :value="value"
-        :required="required"
-        v-on:input="updateValue($event.target.value)"
-    />
+    <input class="input" :type="type" :value="value" :required="required" @input="input($event.target.value)" />
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-
-export default Vue.extend({
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+@Component({
     name: 'AppInput',
-    props: {
-        value: String,
-        type: {
-            type: String,
-            default: 'text',
-        },
+})
+export default class AppInput extends Vue {
+    @Prop(String) value!: string;
+    @Prop({ default: 'text' }) type!: string;
+    @Prop(Boolean) reguired!: boolean;
 
-        required: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    methods: {
-        updateValue(value: string) {
-            this.$emit('input', value);
-        },
-    },
-});
+    @Emit()
+    input(n: string) {}
+}
 </script>
 
 <style scoped lang="scss">
