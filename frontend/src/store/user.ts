@@ -19,6 +19,7 @@ export interface UserInfo {
 export interface UserState extends UserInfo {
     token: string;
     profileImage: string;
+    isGuest: boolean;
 }
 
 export interface UserLogin {
@@ -34,37 +35,43 @@ class User extends VuexModule implements UserState {
     public firstName = '';
     public lastName = '';
     public profileImage = '';
+    public isGuest = false;
 
     @Mutation
-    private SET_TOKEN(token: string) {
+    SET_TOKEN(token: string) {
         this.token = token;
     }
 
     @Mutation
-    private SET_USERNAME(name: string) {
-        this.username = name;
+    SET_USERNAME(username: string) {
+        this.username = username;
     }
 
     @Mutation
-    private SET_PROFILE_IMAGE(profileImage: null | string) {
+    SET_PROFILE_IMAGE(profileImage: null | string) {
         if (profileImage) {
             this.profileImage = profileImage;
         }
     }
 
     @Mutation
-    private SET_LAST_NAME(name: string) {
-        this.lastName = name;
+    SET_LAST_NAME(lastName: string) {
+        this.lastName = lastName;
     }
 
     @Mutation
-    private SET_FIRST_NAME(name: string) {
-        this.lastName = name;
+    SET_FIRST_NAME(firstName: string) {
+        this.firstName = firstName;
     }
 
     @Mutation
-    private SET_EMAIL(email: string) {
+    SET_EMAIL(email: string) {
         this.email = email;
+    }
+
+    @Mutation
+    SET_IS_GUEST(isGuest: boolean) {
+        this.isGuest = isGuest;
     }
 
     @Action({ rawError: true })
