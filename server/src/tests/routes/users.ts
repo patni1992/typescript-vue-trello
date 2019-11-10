@@ -16,7 +16,7 @@ const userData = {
     password: '123456',
     firstName: 'John',
     lastName: 'Doe',
-    userName: 'john3-doe',
+    username: 'john3-doe',
     email: 'john-d3oe@hotmail.com',
 };
 
@@ -34,7 +34,7 @@ describe('/users', () => {
             expect(response.body[0]).toMatchObject({
                 firstName: 'John',
                 lastName: 'Doe',
-                userName: 'john3-doe',
+                username: 'john3-doe',
                 email: 'john-d3oe@hotmail.com',
             });
 
@@ -53,7 +53,7 @@ describe('/users', () => {
             expect(response.body).toMatchObject({
                 firstName: 'John',
                 lastName: 'Doe',
-                userName: 'john3-doe',
+                username: 'john3-doe',
                 email: 'john-d3oe@hotmail.com',
             });
             return response;
@@ -66,7 +66,7 @@ describe('/users', () => {
                 .expect(400);
 
             expect(response.body.message).toEqual(
-                'userName: is a required property, firstName: is a required property, lastName: is a required property, email: is a required property, password: is a required property',
+                'username: is a required property, firstName: is a required property, lastName: is a required property, email: is a required property, password: is a required property',
             );
 
             response = await request(app)
@@ -75,7 +75,7 @@ describe('/users', () => {
                 .expect(400);
 
             expect(response.body.message).toEqual(
-                'userName: is a required property, email: is a required property, password: is a required property',
+                'username: is a required property, email: is a required property, password: is a required property',
             );
 
             response = await request(app)
@@ -83,7 +83,7 @@ describe('/users', () => {
                 .send({
                     firstName: 'test',
                     lastName: '3lf',
-                    userName: 'testuser',
+                    username: 'testuser',
                     password: '12345678',
                     email: 'patrik',
                 })
@@ -103,13 +103,13 @@ describe('/users', () => {
 
             const existingEmail = await request(app)
                 .post('/users')
-                .send({ ...newUser, email: userData.email, userName: 'bob123' })
+                .send({ ...newUser, email: userData.email, username: 'bob123' })
                 .expect(422);
             expect(existingEmail.body.message).toEqual('Email or Username is already taken');
 
             const existingUserName = await request(app)
                 .post('/users')
-                .send({ ...newUser, userName: userData.userName, email: 'bob1233343@hotmail.com' })
+                .send({ ...newUser, username: userData.username, email: 'bob1233343@hotmail.com' })
                 .expect(422);
 
             expect(existingUserName.body.message).toEqual('Email or Username is already taken');

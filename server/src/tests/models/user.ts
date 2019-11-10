@@ -10,7 +10,7 @@ const userData = {
     firstName: 'John',
     lastName: 'Doe',
     password: '123456',
-    userName: 'john-doe',
+    username: 'john-doe',
     email: 'john-doe@hotmail.com',
 };
 
@@ -47,7 +47,7 @@ describe('User model', () => {
         const userData = {
             firstName: 'John',
             lastName: 'Doe',
-            userName: 'john-doe',
+            username: 'john-doe',
             email: 'john-doe@hotmail.com',
         };
         try {
@@ -63,7 +63,7 @@ describe('User model', () => {
         const user = await User.query().insert(userData);
         const keys = Object.keys(user.toJSON());
 
-        expect(user.hiddenFields).toEqual(['password', 'createdAt', 'updatedAt', 'isAdmin']);
+        expect(user.hiddenFields).toEqual(['password', 'createdAt', 'updatedAt', 'isAdmin', 'id']);
         user.hiddenFields.forEach(value => expect(keys).not.toContain(value));
 
         done();

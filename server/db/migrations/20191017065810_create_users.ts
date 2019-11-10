@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<any> {
         t.timestamps(true, true);
         t.string('first_name');
         t.string('last_name');
-        t.string('user_name').unique();
+        t.string('username').unique();
         t.string('email').unique();
         t.string('password');
         t.boolean('is_admin');

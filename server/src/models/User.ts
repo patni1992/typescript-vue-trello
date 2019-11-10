@@ -10,7 +10,7 @@ export class User extends BaseModel {
     readonly id!: number;
     firstName?: string;
     lastName?: string;
-    userName?: string;
+    username?: string;
     email?: string;
     password?: string;
     isAdmin = false;
@@ -18,7 +18,7 @@ export class User extends BaseModel {
     boards?: Array<Board>;
 
     get hiddenFields(): string[] {
-        return ['password', 'createdAt', 'updatedAt', 'isAdmin'];
+        return ['password', 'createdAt', 'updatedAt', 'isAdmin', 'id'];
     }
 
     static relationMappings = {
@@ -32,17 +32,17 @@ export class User extends BaseModel {
         },
     };
 
-    static async getUser(email: User['email'], userName: User['userName']): Promise<User | undefined> {
+    static async getUser(email: User['email'], username: User['username']): Promise<User | undefined> {
         return await User.query()
             .where('email', email || '')
-            .orWhere('user_name', userName || '')
+            .orWhere('username', username || '')
             .first();
     }
 
     static get jsonSchema(): object {
         return {
             type: 'object',
-            required: ['firstName', 'lastName', 'email', 'userName', 'password'],
+            required: ['firstName', 'lastName', 'email', 'username', 'password'],
 
             properties: {
                 id: { type: 'integer' },

@@ -13,27 +13,27 @@ export class UsersController {
     }
 
     public async create(req: Request, res: Response, next: NextFunction): Promise<any> {
-        const { firstName, lastName, userName, email, password } = req.body;
-        const userExist = await User.getUser(email, userName);
+        const { firstName, lastName, username, email, password } = req.body;
+        const userExist = await User.getUser(email, username);
 
         if (userExist) {
             return res.status(422).send({ message: 'Email or Username is already taken' });
         }
 
-        const newUser = await User.query().insert({ firstName, lastName, userName, email, password });
+        const newUser = await User.query().insert({ firstName, lastName, username, email, password });
         return res.status(201).send(newUser);
     }
 
     public async login(req: Request, res: Response, next: NextFunction): Promise<any> {
-        const { userName, password } = req.body;
-        const user = await User.getUser('', userName);
+        const { username, password } = req.body;
+        const user = await User.getUser('', username);
 
         if (user) {
             const isPasswordCorrect = await user.verifyPassword(password);
 
             if (isPasswordCorrect) {
-                const token = jwt.sign({ id: user.id, email: user.email, userName: user.userName }, jwtKey);
-                return res.send(token);
+                const token = jwt.sign({ email: user.email }, jwtKey);
+                return res.send({ token, user });
             }
         }
         return res.sendStatus(401);
