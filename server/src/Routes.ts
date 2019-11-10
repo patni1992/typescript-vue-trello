@@ -9,7 +9,7 @@ export class Routes {
 
     public constructor(app: express.Application) {
         app.route('/login').post(this.usersController.login);
-        app.route('/register').post(auth, this.usersController.create);
+        app.route('/register').post(this.usersController.create);
 
         app.route('/boards')
             .get(auth, this.boardsController.index)
