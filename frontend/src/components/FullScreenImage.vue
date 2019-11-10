@@ -22,17 +22,19 @@ export default class FullScreenImage extends Vue {}
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    background-color: #999;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+
     position: relative;
 }
 
 .children {
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 3rem;
+
+    margin-top: 15rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="app" id="app">
         <router-view />
     </div>
 </template>
@@ -38,5 +38,13 @@ body {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
+}
+
+html,
+body {
+    height: 100%;
+}
+.app {
+    height: inherit;
 }
 </style>

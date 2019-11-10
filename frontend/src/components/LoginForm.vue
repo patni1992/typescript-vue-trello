@@ -22,8 +22,11 @@
             </div>
             <div v-show="showLogin" id="login-tab-content">
                 <form class="login-form" action="" method="post">
+                    <div v-if="loginError" class="error">
+                        {{ loginError }}
+                    </div>
                     <app-input
-                        v-model="loginForm.userName"
+                        v-model="loginForm.username"
                         type="text"
                         class="input"
                         id="login_username"
@@ -37,7 +40,7 @@
                         placeholder="Password"
                     />
 
-                    <app-button variant="primary" expanded type="button" id="loginButton" @click="login">
+                    <app-button variant="primary" expanded type="button" id="loginButton" @click="login(loginForm)">
                         Login
                     </app-button>
                     <app-button variant="dark" expanded type="button" id="guestButton" @click="guest">
@@ -68,10 +71,11 @@ export default class LoginForm extends Vue {
     @Prop(Function) login!: () => void;
     @Prop(Function) guest!: () => void;
     @Prop(Function) register!: () => void;
+    @Prop(String) loginError!: string;
 
     showLogin = true;
     loginForm = {
-        userName: '',
+        username: '',
         password: '',
     };
 }
@@ -91,7 +95,7 @@ export default class LoginForm extends Vue {
 
 .form-wrap {
     background-color: rgba(255, 255, 255, 0.9);
-    width: 40rem;
+    width: 37rem;
     height: 38rem;
     margin: 3em auto;
     box-shadow: 0px 1px 8px #bebebe;
@@ -110,14 +114,21 @@ export default class LoginForm extends Vue {
             background-color: #fff;
         }
     }
-    .tabs-content {
-        padding: 1.5em;
-    }
+}
+
+.login-form,
+.signup-form {
+    margin: 3rem 3.5rem;
 }
 
 .form-wrap .help-text {
     margin-top: 0.6em;
     text-align: center;
     font-size: 1.4rem;
+}
+
+.error {
+    color: #ed4337;
+    margin: 1rem 0;
 }
 </style>
