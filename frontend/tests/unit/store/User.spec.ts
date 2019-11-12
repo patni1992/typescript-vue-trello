@@ -1,5 +1,19 @@
 import user from '@/store/user';
 import mockAxios from 'jest-mock-axios';
+import axios from 'axios';
+
+const responseObj = {
+    data: {
+        user: {
+            username: 'john_doe',
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john_doe@hotmail.com',
+            profileImage: 'someImg.jpg',
+        },
+        token: 'testtoken1244',
+    },
+};
 
 describe('User', () => {
     test('SET_EMAIL set email', () => {
@@ -38,19 +52,6 @@ describe('User', () => {
             password: '123456',
         });
 
-        const responseObj = {
-            data: {
-                user: {
-                    username: 'john_doe',
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: 'john_doe@hotmail.com',
-                    profileImage: 'someImg.jpg',
-                },
-                token: 'testtoken1244',
-            },
-        };
-
         mockAxios.mockResponse(responseObj);
         await promise;
         expect(user.username).toBe('john_doe');
@@ -67,26 +68,26 @@ describe('User', () => {
             password: '123456',
         });
 
-        const responseObj = {
-            data: {
-                user: {
-                    username: 'john_doe',
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: 'john_doe@hotmail.com',
-                    profileImage: 'someImg.jpg',
-                },
-                token: 'testtoken1244',
-            },
-        };
-
         mockAxios.mockResponse(responseObj);
+
         await promise;
         expect(localStorage.__STORE__['token']).toBe(responseObj.data.token);
         expect(JSON.parse(localStorage.__STORE__['user'])).toMatchObject(responseObj.data.user);
     });
 
-    test('logout remove token from state & localstorage', () => {
+    test('login sets token as auth header in axios', async () => {
+        const promise = user.login({
+            username: 'john_doe',
+            password: '123456',
+        });
+
+        mockAxios.mockResponse(responseObj);
+
+        await promise;
+        expect(axios.defaults.headers.common.Authorization).toBe('Bearer testtoken1244');
+    });
+
+    test('logout removes token from state & localstorage', () => {
         const KEY = 'token';
         const VALUE = 'sometoken1234';
         user.SET_TOKEN(VALUE);
@@ -95,5 +96,10 @@ describe('User', () => {
 
         expect(user.token).toBe('');
         expect(localStorage.__STORE__[KEY]).toBe(undefined);
+    });
+    test('logout removes auth header from axios', () => {
+        axios.defaults.headers.common['Authorization'] = `Bearer token12345`;
+        user.logout();
+        expect(axios.defaults.headers.common.Authorization).toBeUndefined();
     });
 });

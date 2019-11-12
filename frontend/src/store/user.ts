@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { loginUser } from '@/api';
+import { loginUser, api } from '@/api';
 import store from '@/store';
 
 function getToken() {
@@ -15,6 +15,10 @@ function getUserData(key: string) {
     if (userData) {
         return userData[key];
     }
+}
+
+if (getToken()) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
 }
 
 export interface UserInfo {
@@ -94,6 +98,8 @@ class User extends VuexModule implements UserState {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', token);
 
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
         this.SET_USERNAME(username);
         this.SET_EMAIL(email);
         this.SET_LAST_NAME(lastName);
@@ -106,6 +112,7 @@ class User extends VuexModule implements UserState {
     public async logout() {
         localStorage.removeItem('token');
         this.SET_TOKEN('');
+        delete api.defaults.headers.common['Authorization'];
     }
 }
 

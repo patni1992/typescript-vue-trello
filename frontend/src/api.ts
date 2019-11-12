@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { UserInfo, UserLogin } from '@/store/user';
 
-const api = axios.create({
+export const api = axios.create({
     baseURL: 'http://localhost:1337',
 });
 
