@@ -60,4 +60,40 @@ describe('User', () => {
         expect(user.profileImage).toBe('someImg.jpg');
         expect(user.token).toBe('testtoken1244');
     });
+
+    test('Login saves token and user in localstorage', async () => {
+        const promise = user.login({
+            username: 'john_doe',
+            password: '123456',
+        });
+
+        const responseObj = {
+            data: {
+                user: {
+                    username: 'john_doe',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    email: 'john_doe@hotmail.com',
+                    profileImage: 'someImg.jpg',
+                },
+                token: 'testtoken1244',
+            },
+        };
+
+        mockAxios.mockResponse(responseObj);
+        await promise;
+        expect(localStorage.__STORE__['token']).toBe(responseObj.data.token);
+        expect(JSON.parse(localStorage.__STORE__['user'])).toMatchObject(responseObj.data.user);
+    });
+
+    test('logout remove token from state & localstorage', () => {
+        const KEY = 'token';
+        const VALUE = 'sometoken1234';
+        user.SET_TOKEN(VALUE);
+        localStorage.setItem(KEY, VALUE);
+        user.logout();
+
+        expect(user.token).toBe('');
+        expect(localStorage.__STORE__[KEY]).toBe(undefined);
+    });
 });
