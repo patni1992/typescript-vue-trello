@@ -8,6 +8,15 @@ function getToken() {
     return token ? token : '';
 }
 
+function getUserData(key: string) {
+    const userStr = localStorage.getItem('user');
+    const userData = userStr ? JSON.parse(userStr) : null;
+
+    if (userData) {
+        return userData[key];
+    }
+}
+
 export interface UserInfo {
     username: string;
     firstName: string;
@@ -30,12 +39,12 @@ export interface UserLogin {
 @Module({ dynamic: true, name: 'user', store, namespaced: true })
 class User extends VuexModule implements UserState {
     public token = getToken();
-    public username = '';
-    public email = '';
-    public firstName = '';
-    public lastName = '';
-    public profileImage = '';
-    public isGuest = false;
+    public username = getUserData('username') || '';
+    public email = getUserData('email') || '';
+    public firstName = getUserData('firstName') || '';
+    public lastName = getUserData('lastName') || '';
+    public profileImage = getUserData('profileImage') || '';
+    public isGuest = getUserData('profileImage') || false;
 
     @Mutation
     SET_TOKEN(token: string) {
@@ -81,6 +90,10 @@ class User extends VuexModule implements UserState {
             user: { username, lastName, firstName, email, profileImage },
             token,
         } = response.data;
+
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('token', token);
+
         this.SET_USERNAME(username);
         this.SET_EMAIL(email);
         this.SET_LAST_NAME(lastName);
@@ -90,7 +103,7 @@ class User extends VuexModule implements UserState {
     }
 
     @Action
-    public async LogOut() {
+    public async logout() {
         localStorage.removeItem('token');
         this.SET_TOKEN('');
     }
