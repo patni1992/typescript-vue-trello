@@ -9,8 +9,7 @@
 <script lang="ts">
 import FullScreenImage from '@/components/FullScreenImage.vue';
 import LoginForm from '@/components/LoginForm.vue';
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import user from '@/store/user';
 
 @Component({
@@ -34,7 +33,8 @@ export default class Auth extends Vue {
         }
     }
     guest() {
-        console.log('lguest');
+        user.SET_IS_GUEST(true);
+        this.$router.push({ name: 'boards' });
     }
     register() {
         console.log('register');
