@@ -42,13 +42,17 @@ export interface UserLogin {
 
 @Module({ dynamic: true, name: 'user', store, namespaced: true })
 class User extends VuexModule implements UserState {
-    public token = getToken();
-    public username = getUserData('username') || '';
-    public email = getUserData('email') || '';
-    public firstName = getUserData('firstName') || '';
-    public lastName = getUserData('lastName') || '';
-    public profileImage = getUserData('profileImage') || '';
-    public isGuest = getUserData('profileImage') || false;
+    token = getToken();
+    username = getUserData('username') || '';
+    email = getUserData('email') || '';
+    firstName = getUserData('firstName') || '';
+    lastName = getUserData('lastName') || '';
+    profileImage = getUserData('profileImage') || '';
+    isGuest = getUserData('profileImage') || false;
+
+    get isLoggedIn() {
+        return this.token ? true : false;
+    }
 
     @Mutation
     SET_TOKEN(token: string) {
