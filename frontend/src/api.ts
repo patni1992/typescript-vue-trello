@@ -13,3 +13,7 @@ interface LoginResponse {
 export const loginUser = (userInfo: UserLogin) => {
     return api.post<LoginResponse>('/login', userInfo);
 };
+
+export const fetchBoards = () => {
+    return api.get('/boards');
+};
