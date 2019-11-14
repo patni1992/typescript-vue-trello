@@ -32,7 +32,7 @@ export class UsersController {
             const isPasswordCorrect = await user.verifyPassword(password);
 
             if (isPasswordCorrect) {
-                const token = jwt.sign({ email: user.email }, jwtKey);
+                const token = jwt.sign({ email: user.email, id: user.id }, jwtKey);
                 return res.send({ token, user });
             }
         }
