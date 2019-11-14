@@ -4,6 +4,9 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import './styles/main.scss';
+//@ts-ignore
+import vClickOutside from 'v-click-outside';
+Vue.use(vClickOutside);
 
 Vue.config.productionTip = false;
 
