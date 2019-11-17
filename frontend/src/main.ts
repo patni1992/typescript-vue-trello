@@ -6,6 +6,14 @@ import store from './store';
 import './styles/main.scss';
 //@ts-ignore
 import vClickOutside from 'v-click-outside';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faCheck } from '@fortawesome/pro-regular-svg-icons';
+
+library.add(faCheck);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 Vue.use(vClickOutside);
 
 Vue.config.productionTip = false;
