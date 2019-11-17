@@ -21,8 +21,10 @@ h1 {
 
 p,
 input,
+button,
 a {
     font-family: 'Lato', sans-serif;
+    font-size: 1.6rem;
 }
 
 a {
