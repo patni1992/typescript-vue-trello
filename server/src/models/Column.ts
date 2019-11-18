@@ -1,6 +1,6 @@
 import { BaseModel } from './BaseModel';
 
-export class Coulumn extends BaseModel {
+export class Column extends BaseModel {
     static tableName = 'columns';
     readonly id!: number;
     boardId?: number;
