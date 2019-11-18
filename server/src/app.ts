@@ -5,9 +5,10 @@ import * as Knex from 'knex';
 import { Model } from 'objection';
 import * as knexConfig from '../knexfile';
 import * as bodyParser from 'body-parser';
+import { HttpException } from './utils/HttpException';
 import 'express-async-errors';
 import * as cors from 'cors';
-import { HttpLogger } from './utils/httpLogger';
+import { HttpLogger } from './utils/HttpLogger';
 import { logger } from './utils/logger';
 import * as morgan from 'morgan';
 export const app = express();
@@ -23,8 +24,8 @@ app.use(morgan('combined', { stream: httpLogger }));
 
 new Routes(app);
 
-app.use(function(err, req, res, next) {
-    logger.error(err.stack);
+app.use(function(err: HttpException, req, res, next) {
+    logger.error(JSON.stringify(err.stack));
     res.status(err.status || 500);
     res.send({
         message: err.message,
