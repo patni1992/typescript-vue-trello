@@ -8,9 +8,10 @@ import './styles/main.scss';
 import vClickOutside from 'v-click-outside';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faCheck, faClipboardListCheck } from '@fortawesome/pro-regular-svg-icons';
 
 library.add(faCheck);
+library.add(faClipboardListCheck);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
