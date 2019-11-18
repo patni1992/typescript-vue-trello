@@ -17,3 +17,11 @@ export const loginUser = (userInfo: UserLogin) => {
 export const fetchBoards = () => {
     return api.get('/boards');
 };
+
+export const fetchColumns = (bordId: number) => {
+    return api.get(`/columns`, {
+        params: {
+            bordId,
+        },
+    });
+};
