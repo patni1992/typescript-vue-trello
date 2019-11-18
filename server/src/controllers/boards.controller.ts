@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { User } from '../models/User';
+import { Board } from '../models/Board';
 import { NextFunction } from 'connect';
 import { ExtendedRequest } from '../interfaces/ExtendedRequest';
 
@@ -31,5 +32,11 @@ export class BoardsController {
 
         const board = await user.$relatedQuery('boards').insert(data);
         return res.json(board);
+    }
+
+    public async show(req: ExtendedRequest, res: Response): Promise<any> {
+        const board = await Board.query().findById(req.params.id);
+
+        res.send(board);
     }
 }
