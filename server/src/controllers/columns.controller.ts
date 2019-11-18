@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { Board } from '../models/Board';
-import { Coulumn } from '../models/Coulumn';
+import { Column } from '../models/Column';
 import { NextFunction } from 'connect';
 import { ExtendedRequest } from '../interfaces/ExtendedRequest';
 import { HttpException } from '../utils/HttpException';
@@ -10,7 +10,7 @@ export class ColumnsController {
         if (!req.query.boardId) {
             return next(new HttpException(400, 'boardId parameter is required'));
         }
-        const columns = await Coulumn.query().where('board_id', req.query.boardId);
+        const columns = await Column.query().where('board_id', req.query.boardId);
 
         return res.json(columns);
     }
