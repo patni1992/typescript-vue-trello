@@ -1,9 +1,23 @@
 <template>
     <div class="app" id="app">
+        <app-header />
         <router-view />
     </div>
 </template>
 
+<script lang="ts">
+import board, { BoardsData } from '@/store/board';
+import { Component, Vue } from 'vue-property-decorator';
+import AppHeader from '@/components/AppHeader.vue';
+
+@Component({
+    components: {
+        AppHeader,
+    },
+    name: 'app',
+})
+export default class Boards extends Vue {}
+</script>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,700&display=swap');
 *,
