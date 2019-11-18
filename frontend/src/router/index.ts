@@ -2,13 +2,14 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Auth from '../views/Auth.vue';
 import Boards from '@/views/Boards.vue';
+import Board from '@/views/Board.vue';
 import user from '@/store/user';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/',
+        path: '/auth',
         name: 'auth',
         component: Auth,
         meta: { public: true },
@@ -22,9 +23,14 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     },
     {
-        path: '/boards',
+        path: '/',
         name: 'boards',
         component: Boards,
+    },
+    {
+        path: '/boards/:id',
+        name: 'board',
+        component: Board,
     },
 ];
 
