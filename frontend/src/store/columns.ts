@@ -12,7 +12,7 @@ export interface ColumnsState {
     allIds: string[];
 }
 
-@Module({ dynamic: true, name: 'coulumn', store, namespaced: true })
+@Module({ dynamic: true, name: 'column', store, namespaced: true })
 class Board extends VuexModule implements ColumnsState {
     byId: ColumnsState['byId'] = {};
     allIds: string[] = [];
