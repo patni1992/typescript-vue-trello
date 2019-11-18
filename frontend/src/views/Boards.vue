@@ -2,9 +2,16 @@
     <div class="container">
         <h1 :style="{ display: 'block' }">Your current boards</h1>
         <div class="boards">
-            <div :style="{ backgroundColor: board.color }" v-for="board in allBoards" :key="board.id" class="board-box">
-                <h2>{{ board.title }}</h2>
-            </div>
+            <router-link
+                :style="{ textDecoration: 'none' }"
+                v-for="board in allBoards"
+                :key="board.id"
+                :to="{ name: 'board', params: { id: board.id } }"
+            >
+                <div :style="{ backgroundColor: board.color }" class="board-box">
+                    <h2>{{ board.title }}</h2>
+                </div>
+            </router-link>
             <create-new-board-card />
         </div>
     </div>
