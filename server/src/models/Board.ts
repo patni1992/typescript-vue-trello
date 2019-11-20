@@ -2,7 +2,7 @@ import { BaseModel } from './BaseModel';
 import { Pojo, Model } from 'objection';
 import { Column } from './Column';
 
-const colors = ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46'] as const;
+export const colors = ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46'] as const;
 
 export class Board extends BaseModel {
     static tableName = 'boards';
