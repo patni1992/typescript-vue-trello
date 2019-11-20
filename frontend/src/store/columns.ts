@@ -22,7 +22,7 @@ class Board extends VuexModule implements ColumnsState {
     }
 
     @Action({ rawError: true })
-    public async getColumns(id: number) {
+    public async getColumns(id: string) {
         const response = await fetchColumns(id);
 
         const mappedData: ColumnsState['byId'] = {};
@@ -31,6 +31,7 @@ class Board extends VuexModule implements ColumnsState {
         });
 
         this.SET_COLUMNS(mappedData);
+        return response.data;
     }
 
     @Mutation

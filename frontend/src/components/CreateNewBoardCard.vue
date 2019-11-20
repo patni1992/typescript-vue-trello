@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts">
-import board, { BoardsData } from '@/store/board';
 import { Component, Vue } from 'vue-property-decorator';
 import ColorPicker from '@/components/ColorPicker.vue';
 @Component({

@@ -6,6 +6,7 @@ export interface BoardsData {
     name: string;
     title: string;
     id: string;
+    color: string;
 }
 
 export interface BoardsState {
@@ -13,13 +14,22 @@ export interface BoardsState {
     allIds: string[];
 }
 
-@Module({ dynamic: true, name: 'board', store, namespaced: true })
+@Module({ dynamic: true, name: 'boars', store, namespaced: true })
 class Board extends VuexModule implements BoardsState {
     byId: BoardsState['byId'] = {};
     allIds: string[] = [];
 
     get getAllBoards() {
         return Object.values(this.byId);
+    }
+
+    get emptyBoard(): BoardsData {
+        return {
+            name: '',
+            title: '',
+            id: '',
+            color: '',
+        };
     }
 
     @Action({ rawError: true })

@@ -6,7 +6,6 @@
 </template>
 
 <script lang="ts">
-import board, { BoardsData } from '@/store/board';
 import { Component, Vue } from 'vue-property-decorator';
 import AppHeader from '@/components/AppHeader.vue';
 

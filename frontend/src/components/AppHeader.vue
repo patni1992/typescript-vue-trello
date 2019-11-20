@@ -19,11 +19,11 @@ export default class AppHeader extends Vue {}
 <style scoped lang="scss">
 .header {
     display: flex;
-    height: 4rem;
+    height: var(--header-height);
     align-items: center;
     background-color: #555555;
     font-size: 1.6rem;
-    padding: 2.5rem;
+    padding: 1rem;
 }
 
 .logo {

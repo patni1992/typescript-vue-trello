@@ -18,10 +18,10 @@ export const fetchBoards = () => {
     return api.get('/boards');
 };
 
-export const fetchColumns = (bordId: number) => {
+export const fetchColumns = (boardId: string) => {
     return api.get(`/columns`, {
         params: {
-            bordId,
+            boardId,
         },
     });
 };
