@@ -1,10 +1,24 @@
 import { BaseModel } from './BaseModel';
+import { Model } from 'objection';
+import { Card } from './Card';
 
 export class Column extends BaseModel {
     static tableName = 'columns';
     readonly id!: number;
-    boardId?: number;
-    title?: string;
+    boardId!: number;
+    title!: string;
+    cards?: Array<Card>;
+
+    static relationMappings = {
+        cards: {
+            relation: Model.HasManyRelation,
+            modelClass: Card,
+            join: {
+                from: 'columns.id',
+                to: 'cards.column_id',
+            },
+        },
+    };
 
     static get jsonSchema(): object {
         return {
