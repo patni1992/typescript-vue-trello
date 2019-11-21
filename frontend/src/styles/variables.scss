@@ -1,20 +1,22 @@
-
-
-:root, [data-theme="default"] {
-    --color-primary: #5B8FFC;
-    --color-green:   #28a55f;
+:root,
+[data-theme='default'] {
+    --color-primary: #5b8ffc;
+    --color-green: #28a55f;
     --color-gray: #798085;
     --color-bg: white;
     --text-color: black;
     --font-size: 1.6rem;
-  }
-  
-  [data-theme] {
+    --header-height: 4rem;
+    --gap: 1rem;
+    --bajs: 100%;
+}
+
+[data-theme] {
     background-color: var(--color-bg);
-    color: var( --text-color);
+    color: var(--text-color);
     font-size: var(--font-size);
-  }
-  
-  [data-theme="dark"] {
+}
+
+[data-theme='dark'] {
     /* Todo add dark theme */
-  }
+}
