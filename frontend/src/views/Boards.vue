@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import board, { BoardsData } from '@/store/board';
+import boards, { BoardsData } from '@/store/boards';
 import { Component, Vue } from 'vue-property-decorator';
 import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 
@@ -30,10 +30,10 @@ import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 })
 export default class Boards extends Vue {
     get allBoards() {
-        return board.getAllBoards;
+        return boards.getAllBoards;
     }
     async created() {
-        await board.getBoards();
+        await boards.getBoards();
     }
 }
 </script>
