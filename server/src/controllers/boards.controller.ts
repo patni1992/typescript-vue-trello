@@ -35,7 +35,10 @@ export class BoardsController {
     }
 
     public async show(req: ExtendedRequest, res: Response): Promise<any> {
-        const board = await Board.query().findById(req.params.id);
+        const board = await Board.query()
+            .findById(req.params.id)
+            .allowEager('columns.cards')
+            .eager(req.query.include);
 
         res.send(board);
     }
