@@ -11,6 +11,7 @@ import * as cors from 'cors';
 import { HttpLogger } from './utils/HttpLogger';
 import { logger } from './utils/logger';
 import * as morgan from 'morgan';
+import { objectionErrorHandler } from './middlewares/objectionErrorHandler';
 export const app = express();
 const httpLogger = new HttpLogger();
 const dbENV = process.env.NODE_ENV || 'development';
@@ -24,7 +25,8 @@ app.use(morgan('combined', { stream: httpLogger }));
 
 new Routes(app);
 
-app.use(function(err: HttpException, req, res, next) {
+app.use(objectionErrorHandler);
+app.use((err: HttpException, req, res, next) => {
     logger.error(JSON.stringify(err.stack));
     res.status(err.status || 500);
     res.send({

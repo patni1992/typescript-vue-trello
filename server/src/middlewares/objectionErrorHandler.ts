@@ -10,7 +10,7 @@ import {
     DataError,
 } from 'objection-db-errors';
 
-export function errorHandler(err, req, res, next) {
+export function objectionErrorHandler(err, req, res, next) {
     if (err instanceof ValidationError) {
         switch (err.type) {
             case 'ModelValidation':
@@ -105,10 +105,6 @@ export function errorHandler(err, req, res, next) {
             data: {},
         });
     } else {
-        res.status(500).send({
-            message: err.message,
-            type: 'UnknownError',
-            data: {},
-        });
+        next(err);
     }
 }
