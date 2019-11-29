@@ -8,7 +8,7 @@ module.exports = {
             host: '127.0.0.1',
             user: 'root',
             password: 'root',
-            database: 'trello-dev',
+            database: 'trello-1234',
         },
         migrations: {
             directory: './db/migrations',
@@ -17,9 +17,7 @@ module.exports = {
     },
     test: {
         client: 'sqlite3',
-        connection: {
-            filename: './db/database.sqlite',
-        },
+        connection: { filename: ':memory:' },
         useNullAsDefault: true,
         migrations: {
             directory: './db/migrations',
