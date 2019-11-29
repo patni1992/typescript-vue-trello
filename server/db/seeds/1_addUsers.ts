@@ -5,25 +5,12 @@ import { User } from '../../src/models/User';
 import { Board } from '../../src/models/Board';
 import { Column } from '../../src/models/Column';
 import { Card } from '../../src/models/Card';
-
-const createUser = () => {
-    return {
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        username: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: '123456',
-    };
-};
+import { userFactory } from '../factories/userFactory';
 
 export async function seed(knex: Knex): Promise<any> {
     Model.knex(knex);
-    const amountofUsers = 50;
-    const users: Partial<User>[] = [];
+    const users: Partial<User>[] = userFactory.buildList(50);
 
-    for (let i = 0; i < amountofUsers; i++) {
-        users.push(createUser());
-    }
     await Card.query().delete();
     await Column.query().delete();
     await Board.query().delete();
