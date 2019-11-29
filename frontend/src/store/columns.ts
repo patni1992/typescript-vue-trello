@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchColumns } from '@/api';
+import { fetchColumns, fetchColumnsWithCards } from '@/api';
 import store from '@/store';
 
 export interface ColumnsData {
@@ -10,6 +10,18 @@ export interface ColumnsData {
 export interface ColumnsState {
     byId: { [key: string]: ColumnsData };
     allIds: string[];
+}
+
+function formatData<T>(entities: T[]) {
+    const mappedData: { allIds: string[]; byId: { [key: string]: T } } = { allIds: [], byId: {} };
+
+    entities.forEach((entity: any) => {
+        mappedData.byId[String(entity.id)] = entity;
+    });
+
+    mappedData.allIds = Object.keys(entities);
+
+    return mappedData;
 }
 
 @Module({ dynamic: true, name: 'column', store, namespaced: true })
@@ -25,19 +37,27 @@ class Board extends VuexModule implements ColumnsState {
     public async getColumns(id: string) {
         const response = await fetchColumns(id);
 
-        const mappedData: ColumnsState['byId'] = {};
-        response.data.forEach((element: any) => {
-            mappedData[String(element.id)] = element;
-        });
+        this.SET_COLUMNS(formatData(response.data));
+        return response.data;
+    }
 
-        this.SET_COLUMNS(mappedData);
+    @Action({ rawError: true })
+    public async getColumnsAndCards(id: string) {
+        const response = await fetchColumnsWithCards(id);
+        const cards = response.data.map((col: any) => col.cards).flat();
+        const columns: ColumnsData[] = response.data.map((col: any) => ({
+            ...col,
+            cards: col.cards.map((card: any) => card.id),
+        }));
+
+        this.SET_COLUMNS(formatData(columns));
         return response.data;
     }
 
     @Mutation
-    SET_COLUMNS(boards: ColumnsState['byId']) {
-        this.byId = boards;
-        this.allIds = Object.keys(boards);
+    SET_COLUMNS(columns: { allIds: string[]; byId: { [key: string]: ColumnsData } }) {
+        this.byId = columns.byId;
+        this.allIds = columns.allIds;
     }
 }
 

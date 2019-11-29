@@ -19,7 +19,7 @@ export class BoardsController {
 
     public async create(req: ExtendedRequest, res: Response, next: NextFunction): Promise<any> {
         const { title, color } = req.body;
-        const data: { color?: string; title: string; userId?: number } = { title };
+        const data: { color?: string; title: string } = { title };
         const user = await User.query().findById(req.user!.id);
 
         if (color) {
