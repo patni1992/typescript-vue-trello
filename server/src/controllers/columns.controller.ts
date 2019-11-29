@@ -10,7 +10,10 @@ export class ColumnsController {
         if (!req.query.boardId) {
             return next(new HttpException(400, 'boardId parameter is required'));
         }
-        const columns = await Column.query().where('board_id', req.query.boardId);
+        const columns = await Column.query()
+            .where('board_id', req.query.boardId)
+            .allowEager('cards')
+            .eager(req.query.include);
 
         return res.json(columns);
     }
