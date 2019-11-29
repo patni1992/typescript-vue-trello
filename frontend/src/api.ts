@@ -25,3 +25,12 @@ export const fetchColumns = (boardId: string) => {
         },
     });
 };
+
+export const fetchColumnsWithCards = (boardId: string) => {
+    return api.get(`/columns`, {
+        params: {
+            boardId,
+            include: 'cards',
+        },
+    });
+};
