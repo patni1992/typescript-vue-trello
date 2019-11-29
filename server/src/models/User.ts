@@ -1,6 +1,6 @@
 import { BaseModel } from './BaseModel';
 import { pick, omit } from 'lodash';
-import * as Bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Pojo, Model } from 'objection';
 import { Board } from './Board';
 
@@ -15,7 +15,7 @@ export class User extends BaseModel {
     password?: string;
     isAdmin = false;
     profileImage?: string;
-    boards?: Array<Board>;
+    boards!: Array<Board>;
 
     get hiddenFields(): string[] {
         return ['password', 'createdAt', 'updatedAt', 'isAdmin', 'id'];
@@ -67,7 +67,7 @@ export class User extends BaseModel {
                 throw new Error('bcrypt tried to hash another bcrypt hash');
             }
 
-            const hash = await Bcrypt.hash(this.password, 12);
+            const hash = await bcrypt.hash(this.password, 12);
             this.password = hash;
             return this.password;
         }
@@ -92,7 +92,7 @@ export class User extends BaseModel {
 
     verifyPassword(password): Promise<boolean> {
         if (this.password) {
-            return Bcrypt.compare(password, this.password);
+            return bcrypt.compare(password, this.password);
         } else {
             throw new Error('password must not be empty');
         }

@@ -1,6 +1,6 @@
-import { app, server, knex } from '../../app';
+import { app, server, knex } from '../../src/app';
 import * as request from 'supertest';
-import { User } from '../../models/User';
+import { User } from '../../src/models/User';
 
 beforeEach(async done => {
     await knex.migrate.rollback();

@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
-import { jwtKey } from '../../../config.js';
-import { auth } from '../../middlewares/auth';
+import { jwtKey } from '../../config.js';
+import { auth } from '../../src/middlewares/auth';
 
 describe('middleware/auth', () => {
     const jwetToken = jwt.sign({ id: 1, email: 'johndoe@hotmail.com' }, jwtKey);

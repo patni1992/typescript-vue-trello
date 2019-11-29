@@ -30,7 +30,7 @@ export class Board extends BaseModel {
             properties: {
                 id: { type: 'integer' },
                 userId: { type: 'integer' },
-                title: { type: 'string', minLength: 1, maxLength: 255 },
+                title: { type: 'string', minLength: 3, maxLength: 255 },
                 color: { enum: colors },
             },
         };
