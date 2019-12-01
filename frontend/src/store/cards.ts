@@ -5,7 +5,7 @@ import store from '@/store';
 export interface CardsData {
     content: string;
     id: string;
-    coLumnId: number;
+    columnId: number;
     color: string;
 }
 
@@ -20,7 +20,7 @@ class Card extends VuexModule implements BoardsState {
     allIds: string[] = [];
 
     get cardsByColumnId() {
-        return (columnId: number) => Object.values(this.byId).filter(card => card.coLumnId === columnId);
+        return (columnId: number) => Object.values(this.byId).filter(card => card.columnId === columnId);
     }
 
     @Mutation
