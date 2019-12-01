@@ -3,9 +3,9 @@ import { fetchBoards } from '@/api';
 import store from '@/store';
 
 export interface BoardsData {
-    name: string;
     title: string;
     id: string;
+    userId: number;
     color: string;
 }
 
@@ -25,9 +25,9 @@ class Board extends VuexModule implements BoardsState {
 
     get emptyBoard(): BoardsData {
         return {
-            name: '',
             title: '',
             id: '',
+            userId: 0,
             color: '',
         };
     }
@@ -35,7 +35,6 @@ class Board extends VuexModule implements BoardsState {
     @Action({ rawError: true })
     public async getBoards() {
         const response = await fetchBoards();
-
         const mappedData: BoardsState['byId'] = {};
         response.data.forEach((element: any) => {
             mappedData[String(element.id)] = element;

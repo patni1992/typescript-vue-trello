@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UserInfo, UserLogin } from '@/store/user';
+import { BoardsData } from '@/store/boards';
 
 export const api = axios.create({
     baseURL: 'http://localhost:1337',
@@ -15,7 +16,7 @@ export const loginUser = (userInfo: UserLogin) => {
 };
 
 export const fetchBoards = () => {
-    return api.get('/boards');
+    return api.get<BoardsData[]>('/boards');
 };
 
 export const fetchColumns = (boardId: string) => {
