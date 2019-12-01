@@ -5,5 +5,5 @@ import { sample } from 'lodash';
 
 export const cardFactory = Factory.makeFactory({
     content: Factory.each(() => markdownData[Math.floor(Math.random() * markdownData.length)]),
-    color: sample(colors),
+    color: Factory.each(() => sample(colors)),
 });
