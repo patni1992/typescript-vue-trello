@@ -1,5 +1,4 @@
-import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchBoards } from '@/api';
+import { VuexModule, Module, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 
 export interface CardsData {
@@ -14,9 +13,15 @@ export interface BoardsState {
     allIds: string[];
 }
 
-@Module({ dynamic: true, name: 'cards', store, namespaced: true })
+@Module({
+    dynamic: true,
+    name: 'cards',
+    store,
+    namespaced: true,
+})
 class Card extends VuexModule implements BoardsState {
     byId: BoardsState['byId'] = {};
+
     allIds: string[] = [];
 
     get cardsByColumnId() {

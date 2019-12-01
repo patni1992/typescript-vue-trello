@@ -1,14 +1,14 @@
 import Vue from 'vue';
-import App from './App.vue';
 import './registerServiceWorker';
-import router from './router';
-import store from './store';
 import './styles/main.scss';
-//@ts-ignore
+// @ts-ignore
 import vClickOutside from 'v-click-outside';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCheck, faClipboardListCheck } from '@fortawesome/pro-regular-svg-icons';
+import store from './store';
+import router from './router';
+import App from './App.vue';
 
 library.add(faCheck);
 library.add(faClipboardListCheck);

@@ -23,7 +23,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 })
 export default class AppButton extends Vue {
     @Prop(String) readonly variant!: string;
+
     @Prop(Boolean) readonly expanded!: boolean;
+
     @Prop([String, Number]) readonly value!: string | boolean;
 }
 </script>

@@ -5,9 +5,7 @@
 </template>
 
 <script lang="ts">
-import boards, { BoardsData } from '@/store/boards';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 import MarkdownRender from './MarkdownRender.vue';
 
 @Component({

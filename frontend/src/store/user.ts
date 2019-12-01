@@ -5,7 +5,7 @@ import store from '@/store';
 function getToken() {
     const token = localStorage.getItem('token');
 
-    return token ? token : '';
+    return token || '';
 }
 
 function getUserData(key: string) {
@@ -15,10 +15,12 @@ function getUserData(key: string) {
     if (userData) {
         return userData[key];
     }
+
+    return null;
 }
 
 if (getToken()) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
+    api.defaults.headers.common.Authorization = `Bearer ${getToken()}`;
 }
 
 export interface UserInfo {
@@ -40,18 +42,29 @@ export interface UserLogin {
     password: string;
 }
 
-@Module({ dynamic: true, name: 'user', store, namespaced: true })
+@Module({
+    dynamic: true,
+    name: 'user',
+    store,
+    namespaced: true,
+})
 class User extends VuexModule implements UserState {
     token = getToken();
+
     username = getUserData('username') || '';
+
     email = getUserData('email') || '';
+
     firstName = getUserData('firstName') || '';
+
     lastName = getUserData('lastName') || '';
+
     profileImage = getUserData('profileImage') || '';
+
     isGuest = getUserData('profileImage') || false;
 
     get isLoggedIn() {
-        return this.token ? true : false;
+        return !!this.token;
     }
 
     @Mutation
@@ -102,7 +115,7 @@ class User extends VuexModule implements UserState {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', token);
 
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         this.SET_USERNAME(username);
         this.SET_EMAIL(email);
@@ -116,7 +129,7 @@ class User extends VuexModule implements UserState {
     public async logout() {
         localStorage.removeItem('token');
         this.SET_TOKEN('');
-        delete api.defaults.headers.common['Authorization'];
+        delete api.defaults.headers.common.Authorization;
     }
 }
 

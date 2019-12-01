@@ -9,11 +9,13 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 })
 export default class AppInput extends Vue {
     @Prop(String) value!: string;
+
     @Prop({ default: 'text' }) type!: string;
+
     @Prop(Boolean) required!: boolean;
 
     @Emit()
-    input(n: string) {}
+    input() {}
 }
 </script>
 

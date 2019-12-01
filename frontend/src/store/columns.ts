@@ -27,9 +27,15 @@ function formatData<T>(entities: T[]) {
     return mappedData;
 }
 
-@Module({ dynamic: true, name: 'column', store, namespaced: true })
+@Module({
+    dynamic: true,
+    name: 'column',
+    store,
+    namespaced: true,
+})
 class Column extends VuexModule implements ColumnsState {
     byId: ColumnsState['byId'] = {};
+
     allIds: string[] = [];
 
     get getAllColumns() {

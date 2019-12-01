@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import AppButton from '@/components/AppButton.vue';
 import AppInput from '@/components/AppInput.vue';
-import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
     name: 'LoginForm',
@@ -69,11 +69,15 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 })
 export default class LoginForm extends Vue {
     @Prop(Function) login!: () => void;
+
     @Prop(Function) guest!: () => void;
+
     @Prop(Function) register!: () => void;
+
     @Prop(String) loginError!: string;
 
     showLogin = true;
+
     loginForm = {
         username: '',
         password: '',

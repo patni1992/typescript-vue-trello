@@ -6,10 +6,9 @@
 </template>
 
 <script lang="ts">
-import boards, { BoardsData } from '@/store/boards';
-import columns, { ColumnsData } from '@/store/columns';
 import { Component, Vue } from 'vue-property-decorator';
-import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
+import boards from '@/store/boards';
+import columns, { ColumnsData } from '@/store/columns';
 import Columns from '@/components/Columns.vue';
 
 @Component({
@@ -20,6 +19,7 @@ import Columns from '@/components/Columns.vue';
 })
 export default class Boards extends Vue {
     board = boards.emptyBoard;
+
     columns: ColumnsData[] = [];
 
     async created() {

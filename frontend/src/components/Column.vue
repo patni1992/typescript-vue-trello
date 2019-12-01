@@ -4,18 +4,18 @@
             <div>{{ truncateString(column.title, 63) }}</div>
         </div>
         <ul :style="{ backgroundColor: color }">
-            <card v-for="card in cards" :card="card" :key="card" />
+            <card v-for="card in cards" :key="card" :card="card" />
         </ul>
-        <div class="footer">Add a card...</div>
+        <div class="footer">
+            Add a card...
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import boards, { BoardsData } from '@/store/boards';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import cards, { CardsData } from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 import Card from '@/components/Card.vue';
 
 @Component({
@@ -26,14 +26,19 @@ import Card from '@/components/Card.vue';
 })
 export default class Column extends Vue {
     @Prop({ type: Object, default: {} }) column!: ColumnsData;
+
     @Prop(String) color!: string;
+
     truncateString(str: string, num: number) {
         if (str.length <= num) {
             return str;
         }
-        return str.slice(0, num) + '...';
+
+        return `${str.slice(0, num)}...`;
     }
+
     cards: CardsData[] = [];
+
     created() {
         this.cards = cards.cardsByColumnId(this.column.id);
     }

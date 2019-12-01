@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import FullScreenImage from '@/components/FullScreenImage.vue';
 import LoginForm from '@/components/LoginForm.vue';
-import { Component, Vue } from 'vue-property-decorator';
 import user from '@/store/user';
 
 @Component({
@@ -21,6 +21,7 @@ import user from '@/store/user';
 })
 export default class Auth extends Vue {
     loginError = '';
+
     async login(userInfo: { username: string; password: string }) {
         try {
             await user.login(userInfo);
@@ -32,10 +33,12 @@ export default class Auth extends Vue {
             }
         }
     }
+
     guest() {
         user.SET_IS_GUEST(true);
         this.$router.push({ name: 'boards' });
     }
+
     register() {
         console.log('register');
     }

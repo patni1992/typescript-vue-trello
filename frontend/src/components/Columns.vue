@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts">
-import boards, { BoardsData } from '@/store/boards';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
+import boards from '@/store/boards';
 import Column from '@/components/Column.vue';
 
 @Component({
@@ -18,8 +17,11 @@ import Column from '@/components/Column.vue';
 })
 export default class Boards extends Vue {
     @Prop(Array) columns!: [];
+
     @Prop(String) color!: string;
+
     board = boards.emptyBoard;
+
     async created() {
         await boards.getBoards();
         this.board = boards.byId[this.$route.params.id];

@@ -3,10 +3,17 @@ module.exports = {
     env: {
         node: true,
     },
-    extends: ['plugin:vue/essential', '@vue/prettier', '@vue/typescript'],
+    extends: ['plugin:vue/essential', '@vue/airbnb', '@vue/typescript', '@vue/prettier'],
+    
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "class-methods-use-this": "off",
+        "import/no-cycle": "off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',

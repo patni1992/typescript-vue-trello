@@ -24,7 +24,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 })
 export default class ColorPicker extends Vue {
     @Prop(String) defaultColor!: string;
+
     @Prop({ type: Array, required: true }) colors!: string[];
+
     selected = this.defaultColor ? this.defaultColor : this.colors[0];
 
     selectColor(color: string) {
