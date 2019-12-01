@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import boards, { BoardsData } from '@/store/boards';
+import cards, { CardsData } from '@/store/cards';
+import { ColumnsData } from '@/store/columns';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 import Card from '@/components/Card.vue';
@@ -23,7 +25,7 @@ import Card from '@/components/Card.vue';
     },
 })
 export default class Column extends Vue {
-    @Prop({ type: Object, default: {} }) column!: {};
+    @Prop({ type: Object, default: {} }) column!: ColumnsData;
     @Prop(String) color!: string;
     truncateString(str: string, num: number) {
         if (str.length <= num) {
@@ -31,18 +33,10 @@ export default class Column extends Vue {
         }
         return str.slice(0, num) + '...';
     }
-    cards = [
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum',
-        'Lorem ipsum dolor sit amet, consectetur adid lsdflpiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum ds',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentums dgfdsf',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum dsfsfd',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum 3',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum f3 ',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentum xd31',
-        'sdkfksdfksdkfk ',
-        'orem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, utcondimentums dgf 9324ekd',
-    ];
+    cards: CardsData[] = [];
+    created() {
+        this.cards = cards.cardsByColumnId(this.column.id);
+    }
 }
 </script>
 
@@ -113,6 +107,7 @@ $list-bg-color: #e2e4e6;
         position: relative;
         max-height: calc(100% - #{$list-header-height} - #{$list-footer-height} - 1rem);
         overflow-y: auto;
+        overflow-x: hidden;
         padding-bottom: 1rem;
 
         &::before {

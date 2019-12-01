@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import boards, { BoardsData } from '@/store/boards';
-import columns from '@/store/columns';
+import columns, { ColumnsData } from '@/store/columns';
 import { Component, Vue } from 'vue-property-decorator';
 import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 import Columns from '@/components/Columns.vue';
@@ -20,17 +20,15 @@ import Columns from '@/components/Columns.vue';
 })
 export default class Boards extends Vue {
     board = boards.emptyBoard;
-    columns = [];
+    columns: ColumnsData[] = [];
 
     async created() {
-        const [boardsData, columnsData] = await Promise.all([
-            boards.getBoards(),
-            columns.getColumns(this.$route.params.id),
+        await Promise.all([
+            columns.getColumnsAndCards(Number(this.$route.params.id)),
+            boards.getBoardById(Number(this.$route.params.id)),
         ]);
-        this.board = boards.byId[this.$route.params.id];
-        this.columns = columnsData;
-
-        console.log(columnsData);
+        this.board = boards.byId[Number(this.$route.params.id)];
+        this.columns = columns.getAllColumns;
     }
 }
 </script>

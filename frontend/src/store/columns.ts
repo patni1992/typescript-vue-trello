@@ -1,10 +1,13 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchColumns, fetchColumnsWithCards } from '@/api';
+import { fetchColumnsWithCards } from '@/api';
+import cardsModule from './cards';
 import store from '@/store';
 
 export interface ColumnsData {
-    name: string;
-    id: string;
+    title: string;
+    id: number;
+    boardId: number;
+    createdAt: string;
 }
 
 export interface ColumnsState {
@@ -25,7 +28,7 @@ function formatData<T>(entities: T[]) {
 }
 
 @Module({ dynamic: true, name: 'column', store, namespaced: true })
-class Board extends VuexModule implements ColumnsState {
+class Column extends VuexModule implements ColumnsState {
     byId: ColumnsState['byId'] = {};
     allIds: string[] = [];
 
@@ -34,17 +37,12 @@ class Board extends VuexModule implements ColumnsState {
     }
 
     @Action({ rawError: true })
-    public async getColumns(id: string) {
-        const response = await fetchColumns(id);
-
-        this.SET_COLUMNS(formatData(response.data));
-        return response.data;
-    }
-
-    @Action({ rawError: true })
-    public async getColumnsAndCards(id: string) {
+    public async getColumnsAndCards(id: number) {
         const response = await fetchColumnsWithCards(id);
         const cards = response.data.map((col: any) => col.cards).flat();
+
+        cardsModule.MERGE_CARDS(formatData(cards));
+
         const columns: ColumnsData[] = response.data.map((col: any) => ({
             ...col,
             cards: col.cards.map((card: any) => card.id),
@@ -61,4 +59,4 @@ class Board extends VuexModule implements ColumnsState {
     }
 }
 
-export default getModule(Board);
+export default getModule(Column);

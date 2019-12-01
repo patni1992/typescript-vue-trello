@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchBoards } from '@/api';
+import { fetchBoards, fetchBoardById } from '@/api';
 import store from '@/store';
 
 export interface BoardsData {
@@ -41,6 +41,18 @@ class Board extends VuexModule implements BoardsState {
         });
 
         this.SET_BOARDS(mappedData);
+    }
+
+    @Action({ rawError: true })
+    public async getBoardById(id: number) {
+        const response = await fetchBoardById(id);
+        this.ADD_BOARD(response.data);
+    }
+
+    @Mutation
+    ADD_BOARD(board: BoardsData) {
+        this.byId[board.id] = board;
+        this.allIds.push(board.id);
     }
 
     @Mutation
