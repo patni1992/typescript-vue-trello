@@ -1,10 +1,12 @@
-import { VuexModule, Module, Mutation, getModule } from 'vuex-module-decorators';
+import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
+import { formatData } from './helpers';
+import { reOrderCards } from '../api';
 import store from '@/store';
 
 export interface CardsData {
     content: string;
     id: string;
-    columnId: number;
+    columnId: string;
     color: string;
 }
 
@@ -25,13 +27,34 @@ class Card extends VuexModule implements BoardsState {
     allIds: string[] = [];
 
     get cardsByColumnId() {
-        return (columnId: number) => Object.values(this.byId).filter(card => card.columnId === columnId);
+        return (columnId: string) => {
+            const cards = Object.values(this.byId).filter(card => card.columnId === columnId);
+            const cardsIds = this.allIds.filter(id => cards.some(card => card.id === id));
+
+            return cardsIds.map((id: string) => this.byId[id]);
+        };
     }
 
     @Mutation
     MERGE_CARDS(cards: { allIds: string[]; byId: { [key: string]: CardsData } }) {
+        const uniqueValues = this.allIds.filter(val => !cards.allIds.includes(val));
         this.byId = { ...this.byId, ...cards.byId };
-        this.allIds = [...this.allIds, ...cards.allIds];
+        this.allIds = [...uniqueValues, ...cards.allIds];
+    }
+
+    @Action({ rawError: true })
+    public async moveCards(data: { columnId: string; cards: CardsData[] }) {
+        const { columnId, cards } = data;
+        const updatedCards = cards.map(card => ({ ...card, columnId }));
+
+        this.MERGE_CARDS(formatData(updatedCards));
+
+        await reOrderCards({ columnId, cardIds: cards.map(card => card.id) });
+    }
+
+    @Mutation
+    MOVE_CARDS(cards: CardsData[]) {
+        console.log(cards);
     }
 }
 

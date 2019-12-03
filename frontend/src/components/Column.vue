@@ -2,19 +2,20 @@
     <div class="column">
         <div class="header" :style="{ backgroundColor: color }">
             <div>{{ truncateString(column.title, 63) }}</div>
+            <p :style="{ padding: '0.8rem 0' }">Add a card...</p>
         </div>
         <ul :style="{ backgroundColor: color }">
-            <card v-for="card in cards" :key="card" :card="card" />
+            <draggable group="cards" v-model="cards">
+                <card v-for="card in cards" :key="card.id" :card="card" />
+            </draggable>
         </ul>
-        <div class="footer">
-            Add a card...
-        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import cards, { CardsData } from '@/store/cards';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import draggable from 'vuedraggable';
+import cards from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
 import Card from '@/components/Card.vue';
 
@@ -22,12 +23,23 @@ import Card from '@/components/Card.vue';
     name: 'column',
     components: {
         Card,
+        draggable,
     },
 })
 export default class Column extends Vue {
     @Prop({ type: Object, default: {} }) column!: ColumnsData;
 
     @Prop(String) color!: string;
+
+    @PropSync('name', { type: String }) syncedName!: string;
+
+    get cards() {
+        return cards.cardsByColumnId(this.column.id);
+    }
+
+    set cards(v) {
+        cards.moveCards({ columnId: this.column.id, cards: v });
+    }
 
     truncateString(str: string, num: number) {
         if (str.length <= num) {
@@ -37,11 +49,9 @@ export default class Column extends Vue {
         return `${str.slice(0, num)}...`;
     }
 
-    cards: CardsData[] = [];
-
-    created() {
-        this.cards = cards.cardsByColumnId(this.column.id);
-    }
+    // created() {
+    //     this.cards = cards.cardsByColumnId(this.column.id);
+    // }
 }
 </script>
 
@@ -68,7 +78,6 @@ $list-bg-color: #e2e4e6;
         line-height: 2rem;
         font-size: 16px;
         padding: var(--gap);
-        max-height: 4em;
         font-weight: bold;
 
         border-top-left-radius: $list-border-radius;
@@ -103,17 +112,16 @@ $list-bg-color: #e2e4e6;
         background-color: transparent;
         color: white;
         cursor: pointer;
-        padding: 0.5rem 1rem;
+        padding: 2.5rem 1rem;
     }
 
     ul {
         list-style: none;
         margin: 0;
         position: relative;
-        max-height: calc(100% - #{$list-header-height} - #{$list-footer-height} - 1rem);
+
         overflow-y: auto;
         overflow-x: hidden;
-        padding-bottom: 1rem;
 
         &::before {
             content: '';
