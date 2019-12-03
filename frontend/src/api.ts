@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { UserInfo, UserLogin } from '@/store/user';
-import { BoardsData } from '@/store/boards';
+import { BoardsData, NewBoard } from '@/store/boards';
 import { ColumnsData } from '@/store/columns';
 import { CardsData } from '@/store/cards';
 
@@ -13,7 +13,7 @@ interface LoginResponse {
     token: string;
 }
 
-interface ColumnsWithCards extends ColumnsData {
+interface ColumnsWithCards extends Omit<ColumnsData, 'cards'> {
     cards: CardsData[];
 }
 
@@ -27,6 +27,14 @@ export const fetchBoards = () => {
 
 export const fetchBoardById = (id: number) => {
     return api.get<BoardsData>(`/boards/${id}`);
+};
+
+export const createBoard = (newBoard: NewBoard) => {
+    return api.post<BoardsData>(`/boards/`, newBoard);
+};
+
+export const reOrderCards = (data: { columnId: string; cardIds: string[] }) => {
+    return api.patch<ColumnsWithCards>(`/cards/reorder`, data);
 };
 
 export const fetchColumnsWithCards = (boardId: number) => {
