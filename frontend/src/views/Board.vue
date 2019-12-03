@@ -35,15 +35,14 @@ export default class Boards extends Vue {
 
 <style lang="scss" scoped>
 .container {
-    height: calc(100vh - var(--header-height));
+   
     padding-top: 1.2rem;
-    display: grid;
-    grid-template-rows: 4rem 1fr;
+    
     color: #eee;
 }
 
 .board-header {
-    padding-left: var(--gap);
+    padding: var(--gap);
     display: flex;
     color: white;
 }
