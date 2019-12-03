@@ -9,7 +9,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import VueMarkdown from 'vue-markdown';
 @Component({
-    name: 'markdownRender',
+    name: 'MarkdownRender',
     components: {
         VueMarkdown,
     },
