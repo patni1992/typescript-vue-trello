@@ -2,29 +2,19 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 import { fetchColumnsWithCards } from '@/api';
 import cardsModule from './cards';
 import store from '@/store';
+import { formatData } from './helpers';
 
 export interface ColumnsData {
     title: string;
-    id: number;
+    id: string;
     boardId: number;
     createdAt: string;
+    cards: string[];
 }
 
 export interface ColumnsState {
     byId: { [key: string]: ColumnsData };
     allIds: string[];
-}
-
-function formatData<T>(entities: T[]) {
-    const mappedData: { allIds: string[]; byId: { [key: string]: T } } = { allIds: [], byId: {} };
-
-    entities.forEach((entity: any) => {
-        mappedData.byId[String(entity.id)] = entity;
-    });
-
-    mappedData.allIds = Object.keys(entities);
-
-    return mappedData;
 }
 
 @Module({
