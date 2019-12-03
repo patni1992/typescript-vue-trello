@@ -2,6 +2,7 @@
     <div class="container">
         <h1 :style="{ display: 'block' }">Your current boards</h1>
         <div class="boards">
+            <create-new-board-card :onCreate="createBoard" />
             <router-link
                 :style="{ textDecoration: 'none' }"
                 v-for="board in allBoards"
@@ -12,14 +13,13 @@
                     <h2>{{ board.title }}</h2>
                 </div>
             </router-link>
-            <create-new-board-card />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import boards, { BoardsData } from '@/store/boards';
 import { Component, Vue } from 'vue-property-decorator';
+import boards, { NewBoard } from '@/store/boards';
 import CreateNewBoardCard from '@/components/CreateNewBoardCard.vue';
 
 @Component({
@@ -32,8 +32,13 @@ export default class Boards extends Vue {
     get allBoards() {
         return boards.getAllBoards;
     }
+
     async created() {
         await boards.getBoards();
+    }
+
+    createBoard(newBoard: NewBoard) {
+        boards.createNewBoard(newBoard);
     }
 }
 </script>

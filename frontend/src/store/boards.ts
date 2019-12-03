@@ -1,5 +1,6 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchBoards, fetchBoardById } from '@/api';
+import { fetchBoards, fetchBoardById, createBoard } from '@/api';
+import { formatData } from './helpers';
 import store from '@/store';
 
 export interface BoardsData {
@@ -9,18 +10,29 @@ export interface BoardsData {
     color: string;
 }
 
+export interface NewBoard {
+    title: string;
+    color: string;
+}
+
 export interface BoardsState {
     byId: { [key: string]: BoardsData };
     allIds: string[];
 }
 
-@Module({ dynamic: true, name: 'boars', store, namespaced: true })
+@Module({
+    dynamic: true,
+    name: 'boards',
+    store,
+    namespaced: true,
+})
 class Board extends VuexModule implements BoardsState {
     byId: BoardsState['byId'] = {};
+
     allIds: string[] = [];
 
     get getAllBoards() {
-        return Object.values(this.byId);
+        return this.allIds.map(id => this.byId[id]);
     }
 
     get emptyBoard(): BoardsData {
@@ -35,12 +47,8 @@ class Board extends VuexModule implements BoardsState {
     @Action({ rawError: true })
     public async getBoards() {
         const response = await fetchBoards();
-        const mappedData: BoardsState['byId'] = {};
-        response.data.forEach((element: any) => {
-            mappedData[String(element.id)] = element;
-        });
 
-        this.SET_BOARDS(mappedData);
+        this.SET_BOARDS(formatData(response.data));
     }
 
     @Action({ rawError: true })
@@ -49,16 +57,29 @@ class Board extends VuexModule implements BoardsState {
         this.ADD_BOARD(response.data);
     }
 
-    @Mutation
-    ADD_BOARD(board: BoardsData) {
-        this.byId[board.id] = board;
-        this.allIds.push(board.id);
+    @Action({ rawError: true })
+    public async createNewBoard(newBoard: NewBoard) {
+        const response = await createBoard(newBoard);
+        this.ADD_BOARD(response.data);
     }
 
     @Mutation
-    SET_BOARDS(boards: BoardsState['byId']) {
-        this.byId = boards;
-        this.allIds = Object.keys(boards);
+    ADD_BOARD(board: BoardsData) {
+        this.byId = { ...this.byId, [board.id]: board };
+        this.allIds.unshift(board.id);
+    }
+
+    @Mutation
+    REPLACE_BOARD(boardId: string, newBoard: BoardsData) {
+        this.byId[newBoard.id] = newBoard;
+        this.allIds[this.allIds.indexOf(newBoard.id)] = newBoard.id;
+        delete this.byId[boardId];
+    }
+
+    @Mutation
+    SET_BOARDS(boards: { allIds: string[]; byId: { [key: string]: BoardsData } }) {
+        this.byId = boards.byId;
+        this.allIds = boards.allIds;
     }
 }
 

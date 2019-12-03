@@ -6,7 +6,7 @@
         <div class="create-board" v-if="showCreate">
             <input v-model="boardTitle" placeholder="Add board title" />
             <color-picker :colors="['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46']" v-model="selectedColor" />
-            <button class="create-btn" type="button">
+            <button @click="createBoard" :disabled="!boardTitle.length" class="create-btn" type="button">
                 Create
             </button>
         </div>
@@ -14,8 +14,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import ColorPicker from '@/components/ColorPicker.vue';
+
+interface onCreateData {
+    title: string;
+    color: string;
+}
 @Component({
     name: 'CreateNewBoardCard',
     components: {
@@ -23,11 +28,21 @@ import ColorPicker from '@/components/ColorPicker.vue';
     },
 })
 export default class CreateNewBoardCard extends Vue {
+    @Prop(Function) onCreate!: (newBoard: onCreateData) => void;
+
     showCreate = false;
+
     boardTitle = '';
+
     selectedColor = '';
+
     setShowCreate(e: Event, val: boolean) {
-        this.showCreate = val ? val : false;
+        this.showCreate = val || false;
+    }
+
+    createBoard() {
+        this.onCreate({ title: this.boardTitle, color: this.selectedColor });
+        this.boardTitle = '';
     }
 }
 </script>
@@ -74,5 +89,13 @@ export default class CreateNewBoardCard extends Vue {
     background-color: #46b364;
     font-weight: 700;
     display: block;
+    transition: all 0.7s;
+    cursor: pointer;
+
+    &:disabled {
+        background-color: #cccccc;
+        color: black;
+        cursor: not-allowed;
+    }
 }
 </style>
