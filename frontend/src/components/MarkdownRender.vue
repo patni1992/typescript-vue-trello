@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 import VueMarkdown from 'vue-markdown';
 @Component({
@@ -16,7 +16,6 @@ import VueMarkdown from 'vue-markdown';
 })
 export default class Card extends Vue {}
 </script>
-
 
 <style lang="scss">
 // Dont apply scoped, will not affect vue-markdown
