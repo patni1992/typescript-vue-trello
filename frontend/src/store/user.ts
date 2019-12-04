@@ -128,6 +128,7 @@ class User extends VuexModule implements UserState {
     @Action
     public async logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         this.SET_TOKEN('');
         delete api.defaults.headers.common.Authorization;
     }
