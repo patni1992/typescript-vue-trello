@@ -5,13 +5,14 @@ import './styles/main.scss';
 import vClickOutside from 'v-click-outside';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCheck, faClipboardListCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faCheck, faClipboardListCheck, faSignOutAlt } from '@fortawesome/pro-regular-svg-icons';
 import store from './store';
 import router from './router';
 import App from './App.vue';
 
 library.add(faCheck);
 library.add(faClipboardListCheck);
+library.add(faSignOutAlt);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
