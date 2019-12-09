@@ -9,7 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import MarkdownRender from './MarkdownRender.vue';
 
 @Component({
-    name: 'card',
+    name: 'Card',
     components: {
         MarkdownRender,
     },
