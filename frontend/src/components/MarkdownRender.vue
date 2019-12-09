@@ -1,5 +1,5 @@
 <template>
-    <vue-markdown class="markdown-render">
+    <vue-markdown :html="false" class="markdown-render">
         <slot />
     </vue-markdown>
 </template>
@@ -22,6 +22,13 @@ export default class Card extends Vue {}
 .markdown-render {
     code {
         white-space: normal;
+    }
+    ul {
+        padding-left: 1.5rem;
+    }
+
+    img {
+        max-width: 100%;
     }
 }
 </style>
