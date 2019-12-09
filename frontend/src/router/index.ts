@@ -24,7 +24,7 @@ const routes = [
     },
     {
         path: '/',
-        name: 'home',
+        name: 'boards',
         component: Boards,
     },
     {
@@ -43,11 +43,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(route => !route.meta.public);
 
-    if (!user.isLoggedIn && requiresAuth) {
+    if (!user.isLoggedIn && !user.isGuest && requiresAuth) {
         next({ name: 'auth' });
     }
 
-    if (user.isLoggedIn && to.name === 'auth') {
+    if ((user.isLoggedIn || user.isGuest) && to.name === 'auth') {
         next({ name: 'boards' });
     }
 

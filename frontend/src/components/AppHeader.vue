@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <router-link id="logo-link" class="logo" :to="{ name: 'home' }">
+        <router-link id="logo-link" class="logo" :to="{ name: 'boards' }">
             <font-awesome-icon :style="{ color: 'white' }" :icon="['far', 'clipboard-list-check']" />
             <h1 class="logo-text">Boards</h1>
         </router-link>

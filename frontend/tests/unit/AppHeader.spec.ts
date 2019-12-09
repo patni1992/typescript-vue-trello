@@ -20,14 +20,14 @@ describe('AppHeader', () => {
         expect(wrapper.isVueInstance()).toBeTruthy();
     });
 
-    test('renders Router link to home page', () => {
+    test('renders Router link to boards page', () => {
         const wrapper = shallowMount(AppHeader, {
             stubs: {
                 RouterLink: RouterLinkStub,
             },
         });
 
-        expect(wrapper.find('#logo-link').props().to).toMatchObject({ name: 'home' });
+        expect(wrapper.find('#logo-link').props().to).toMatchObject({ name: 'boards' });
     });
 
     test('if logged in show username', () => {

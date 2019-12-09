@@ -9,7 +9,7 @@
                 :key="board.id"
                 :to="{ name: 'board', params: { id: board.id } }"
             >
-                <div :style="{ backgroundColor: board.color }" class="board-box">
+                <div :class="`board-box ${board.color}`">
                     <h2>{{ board.title }}</h2>
                 </div>
             </router-link>
