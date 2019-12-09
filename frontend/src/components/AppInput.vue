@@ -1,5 +1,21 @@
 <template>
-    <input class="input" :type="type" :value="value" :required="required" @input="input($event.target.value)" />
+    <textarea
+        v-if="type == 'textarea'"
+        class="input textarea"
+        :value="value"
+        v-bind="$attrs"
+        @input="input($event.target.value)"
+    />
+
+    <input
+        v-else
+        class="input"
+        v-bind="$attrs"
+        :type="type"
+        :value="value"
+        :required="required"
+        @input="input($event.target.value)"
+    />
 </template>
 
 <script lang="ts">
@@ -27,11 +43,16 @@ export default class AppInput extends Vue {
     border: 1.2px solid #cfcfcf;
     outline: 0;
     display: inline-block;
-    margin: 0 0 1rem 0;
+    margin: 0;
     padding-right: 1rem;
     width: 100%;
     color: black;
     font-size: 1.6rem;
     border-radius: 0.4rem;
+}
+
+.textarea {
+    resize: vertical;
+    height: 10rem;
 }
 </style>
