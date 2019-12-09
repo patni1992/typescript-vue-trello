@@ -1,9 +1,9 @@
 import { Response } from 'express';
 import { Board } from '../models/Board';
 import { Column } from '../models/Column';
-import { NextFunction } from 'connect';
 import { ExtendedRequest } from '../interfaces/ExtendedRequest';
 import { HttpException } from '../utils/HttpException';
+import { NextFunction } from 'express-serve-static-core';
 
 export class ColumnsController {
     public async index(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
@@ -14,6 +14,12 @@ export class ColumnsController {
             .where('board_id', req.query.boardId)
             .allowEager('cards')
             .eager(req.query.include);
+
+        columns.map(column => {
+            if (column.cards) {
+                column.cards = column.cards.sort((a, b) => (a.position > b.position ? 1 : -1));
+            }
+        });
 
         return res.json(columns);
     }
