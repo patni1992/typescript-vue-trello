@@ -17,6 +17,18 @@ describe('AppButton', () => {
         expect(wrapper.find('input').attributes().type).toBe('text');
     });
 
+    test('renders textarea if type is textarea', () => {
+        wrapper = shallowMount(AppInput, {
+            propsData: {
+                type: 'textarea',
+            },
+        });
+        const textarea = wrapper.find('textarea');
+
+        expect(textarea.exists()).toBe(true);
+        expect(textarea.classes()).toContain('textarea');
+    });
+
     test('can set type password', () => {
         wrapper = shallowMount(AppInput, {
             propsData: {
