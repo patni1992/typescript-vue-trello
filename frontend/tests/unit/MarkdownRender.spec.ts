@@ -13,11 +13,6 @@ describe('MarkdownRender', () => {
         expect(wrapper.classes()).toContain('markdown-render');
     });
 
-    test('has .markdown-render class applied', () => {
-        const wrapper = shallowMount(MarkdownRender, {});
-        expect(wrapper.classes()).toContain('markdown-render');
-    });
-
     test('Output slot', () => {
         const wrapper = shallowMount(MarkdownRender, {
             slots: {
