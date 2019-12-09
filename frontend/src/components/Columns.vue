@@ -1,6 +1,13 @@
 <template>
     <div class="columns">
         <column v-for="column in columns" :key="column.id" :color="color" :column="column" />
+        <div class="add-column">
+            <div class="content">
+                <div class="text">
+                    Add a column
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -30,6 +37,17 @@ export default class Boards extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.add-column {
+    width: 30rem;
+
+    .text {
+        z-index: 2;
+        color: white;
+        font-weight: bold;
+        padding: 1rem;
+        cursor: pointer;
+    }
+}
 .columns {
     display: flex;
     overflow-x: auto;
@@ -40,6 +58,10 @@ export default class Boards extends Vue {
     &::after {
         content: '';
         flex: 0 var(--gap);
+    }
+
+    &:last-child {
+        margin-right: 1rem;
     }
 }
 </style>
