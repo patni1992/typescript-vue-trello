@@ -1,12 +1,6 @@
 <template>
     <div class="color-picker">
-        <span
-            class="dot"
-            @click="selectColor(color)"
-            :style="{ backgroundColor: color }"
-            v-for="color in colors"
-            :key="color"
-        >
+        <span :class="`dot ${color}`" @click="selectColor(color)" v-for="color in colors" :key="color">
             <font-awesome-icon
                 v-if="selected === color"
                 class="checked"

@@ -33,11 +33,15 @@ export const createBoard = (newBoard: NewBoard) => {
     return api.post<BoardsData>(`/boards/`, newBoard);
 };
 
+export const addCard = (card: CardsData) => {
+    return api.post<CardsData>(`/columns/${card.columnId}/cards`, card);
+};
+
 export const reOrderCards = (data: { columnId: string; cardIds: string[] }) => {
     return api.patch<ColumnsWithCards>(`/cards/reorder`, data);
 };
 
-export const fetchColumnsWithCards = (boardId: number) => {
+export const fetchColumnsWithCards = (boardId: string) => {
     return api.get<ColumnsWithCards[]>(`/columns`, {
         params: {
             boardId,

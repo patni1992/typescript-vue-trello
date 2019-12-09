@@ -1,5 +1,5 @@
 <template>
-    <li :style="{ backgroundColor: card.color }" class="card">
+    <li :class="`card ${card.color}`">
         <MarkdownRender>{{ card.content }} </MarkdownRender>
     </li>
 </template>

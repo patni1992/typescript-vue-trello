@@ -5,7 +5,7 @@
         </div>
         <div class="create-board" v-if="showCreate">
             <input v-model="boardTitle" placeholder="Add board title" />
-            <color-picker :colors="['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46']" v-model="selectedColor" />
+            <color-picker :colors="['red', 'green', 'blue', 'orange']" v-model="selectedColor" />
             <button @click="createBoard" :disabled="!boardTitle.length" class="create-btn" type="button">
                 Create
             </button>

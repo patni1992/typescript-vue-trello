@@ -1,10 +1,11 @@
 <template>
     <div class="column">
-        <div class="header" :style="{ backgroundColor: color }">
-            <div>{{ truncateString(column.title, 63) }}</div>
-            <p :style="{ padding: '0.8rem 0' }">Add a card...</p>
+        <div :class="`header darken-${color}`">
+            <h2 class="header-title">{{ truncateString(column.title, 63) }}</h2>
+            <hr class="header-seperator" />
+            <add-card @save="addNewCard" />
         </div>
-        <ul :style="{ backgroundColor: color }">
+        <ul :class="`darken-${color}`">
             <draggable group="cards" v-model="cards">
                 <card v-for="card in cards" :key="card.id" :card="card" />
             </draggable>
@@ -18,12 +19,14 @@ import draggable from 'vuedraggable';
 import cards from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
 import Card from '@/components/Card.vue';
+import AddCard from '@/components/AddCard.vue';
 
 @Component({
     name: 'column',
     components: {
         Card,
         draggable,
+        AddCard,
     },
 })
 export default class Column extends Vue {
@@ -32,6 +35,13 @@ export default class Column extends Vue {
     @Prop(String) color!: string;
 
     @PropSync('name', { type: String }) syncedName!: string;
+
+    addNewCard(value: string) {
+        cards.createCard({
+            content: value,
+            columnId: this.column.id,
+        });
+    }
 
     get cards() {
         return cards.cardsByColumnId(this.column.id);
@@ -49,9 +59,9 @@ export default class Column extends Vue {
         return `${str.slice(0, num)}...`;
     }
 
-    // created() {
-    //     this.cards = cards.cardsByColumnId(this.column.id);
-    // }
+    created() {
+        this.cards = cards.cardsByColumnId(this.column.id);
+    }
 }
 </script>
 
@@ -68,10 +78,9 @@ $list-bg-color: #e2e4e6;
     height: calc(100% - var(--gap) - #{$scrollbar-thickness});
 
     > * {
-        background-color: $list-bg-color;
         color: #333;
 
-        padding: 0 var(--gap);
+        padding: 0 var(--gap) 2rem var(--gap);
     }
 
     .header {
@@ -79,23 +88,18 @@ $list-bg-color: #e2e4e6;
         font-size: 16px;
         padding: var(--gap);
         font-weight: bold;
-
+        z-index: 100;
         border-top-left-radius: $list-border-radius;
         border-top-right-radius: $list-border-radius;
         color: white;
         position: relative;
 
-        &::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: inherit;
-            z-index: 0;
-            background-color: black;
-            opacity: 0.3;
+        &-title {
+            font-size: 1.8rem;
+        }
+
+        &-seperator {
+            margin: 1rem 0;
         }
 
         div {
@@ -122,19 +126,6 @@ $list-bg-color: #e2e4e6;
 
         overflow-y: auto;
         overflow-x: hidden;
-
-        &::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background-color: black;
-            opacity: 0.3;
-            overflow: auto;
-        }
     }
 }
 </style>
