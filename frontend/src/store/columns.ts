@@ -1,15 +1,17 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
 import { fetchColumnsWithCards } from '@/api';
-import cardsModule from './cards';
+import cardsModule, { CardsData } from './cards';
 import store from '@/store';
 import { formatData } from './helpers';
+import { columnsWithCards } from './guestData';
+import user from './user';
 
 export interface ColumnsData {
     title: string;
     id: string;
-    boardId: number;
+    boardId: string;
     createdAt: string;
-    cards: string[];
+    cards: CardsData[];
 }
 
 export interface ColumnsState {
@@ -32,20 +34,30 @@ class Column extends VuexModule implements ColumnsState {
         return Object.values(this.byId);
     }
 
+    private get guestColumnsWithCards() {
+        return columnsWithCards;
+    }
+
     @Action({ rawError: true })
-    public async getColumnsAndCards(id: number) {
-        const response = await fetchColumnsWithCards(id);
-        const cards = response.data.map((col: any) => col.cards).flat();
+    public async getColumnsAndCards(id: string) {
+        let data = this.guestColumnsWithCards.filter(column => column.boardId === id);
+
+        if (!user.isGuest) {
+            const response = await fetchColumnsWithCards(id);
+            data = response.data;
+        }
+
+        const cards = data.map((col: any) => col.cards).flat();
 
         cardsModule.MERGE_CARDS(formatData(cards));
 
-        const columns: ColumnsData[] = response.data.map((col: any) => ({
+        const columns: ColumnsData[] = data.map((col: any) => ({
             ...col,
             cards: col.cards.map((card: any) => card.id),
         }));
 
         this.SET_COLUMNS(formatData(columns));
-        return response.data;
+        return data;
     }
 
     @Mutation

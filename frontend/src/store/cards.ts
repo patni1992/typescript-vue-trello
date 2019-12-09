@@ -1,7 +1,8 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
 import { formatData } from './helpers';
-import { reOrderCards } from '../api';
+import { reOrderCards, addCard } from '../api';
 import store from '@/store';
+import user from './user';
 
 export interface CardsData {
     content: string;
@@ -42,6 +43,12 @@ class Card extends VuexModule implements BoardsState {
         this.allIds = [...uniqueValues, ...cards.allIds];
     }
 
+    @Mutation
+    ADD_CARD(card: CardsData) {
+        this.byId[card.id] = card;
+        this.allIds.unshift(card.id);
+    }
+
     @Action({ rawError: true })
     public async moveCards(data: { columnId: string; cards: CardsData[] }) {
         const { columnId, cards } = data;
@@ -49,12 +56,32 @@ class Card extends VuexModule implements BoardsState {
 
         this.MERGE_CARDS(formatData(updatedCards));
 
+        if (user.isGuest) {
+            return;
+        }
+
         await reOrderCards({ columnId, cardIds: cards.map(card => card.id) });
     }
 
-    @Mutation
-    MOVE_CARDS(cards: CardsData[]) {
-        console.log(cards);
+    @Action({ rawError: true })
+    public async createCard(data: { content: string; columnId: string }) {
+        const { content, columnId } = data;
+        const newCard = {
+            content,
+            id: new Date().valueOf().toString(),
+            columnId,
+            color: '#0279BF',
+        };
+
+        this.ADD_CARD(newCard);
+
+        if (user.isGuest) {
+            return;
+        }
+
+        const result = await addCard(newCard);
+
+        return result;
     }
 }
 

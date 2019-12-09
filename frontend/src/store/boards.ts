@@ -1,7 +1,9 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
 import { fetchBoards, fetchBoardById, createBoard } from '@/api';
 import { formatData } from './helpers';
+import { guestBoards } from './guestData';
 import store from '@/store';
+import user from './user';
 
 export interface BoardsData {
     title: string;
@@ -44,17 +46,28 @@ class Board extends VuexModule implements BoardsState {
         };
     }
 
+    private get guestBoards() {
+        return guestBoards;
+    }
+
     @Action({ rawError: true })
     public async getBoards() {
-        const response = await fetchBoards();
+        let boards = this.guestBoards;
 
-        this.SET_BOARDS(formatData(response.data));
+        if (!user.isGuest) {
+            const response = await fetchBoards();
+            boards = response.data;
+        }
+
+        this.SET_BOARDS(formatData(boards));
     }
 
     @Action({ rawError: true })
     public async getBoardById(id: number) {
-        const response = await fetchBoardById(id);
-        this.ADD_BOARD(response.data);
+        if (!user.isGuest) {
+            const response = await fetchBoardById(id);
+            this.ADD_BOARD(response.data);
+        }
     }
 
     @Action({ rawError: true })
