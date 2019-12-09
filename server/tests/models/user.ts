@@ -78,7 +78,7 @@ describe('User model', () => {
         const user = await User.query()
             .insert(userData)
             .resolve(true);
-
+        user.boards = [];
         await user
             .$relatedQuery('boards')
             .insert(data)
