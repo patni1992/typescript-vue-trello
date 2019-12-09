@@ -61,7 +61,7 @@ class User extends VuexModule implements UserState {
 
     profileImage = getUserData('profileImage') || '';
 
-    isGuest = getUserData('profileImage') || false;
+    isGuest = false;
 
     get isLoggedIn() {
         return !!this.token;
