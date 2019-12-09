@@ -1,15 +1,14 @@
 import { BaseModel } from './BaseModel';
-import { Pojo, Model } from 'objection';
+import { Model } from 'objection';
 import { Column } from './Column';
-
-export const colors = ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46'] as const;
+import { Colors } from '../interfaces/Colors';
 
 export class Board extends BaseModel {
     static tableName = 'boards';
     readonly id!: number;
-    userId?: number;
-    title?: string;
-    color?: typeof colors[number];
+    userId!: number;
+    title!: string;
+    color!: typeof Colors[number];
     columns?: Array<Column>;
 
     static relationMappings = {
@@ -31,7 +30,7 @@ export class Board extends BaseModel {
                 id: { type: 'integer' },
                 userId: { type: 'integer' },
                 title: { type: 'string', minLength: 3, maxLength: 255 },
-                color: { enum: colors },
+                color: { enum: Colors },
             },
         };
     }

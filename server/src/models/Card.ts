@@ -1,13 +1,13 @@
 import { BaseModel } from './BaseModel';
-
-export const colors = ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46'] as const;
+import { Colors } from '../interfaces/Colors';
 
 export class Card extends BaseModel {
     static tableName = 'cards';
     readonly id!: number;
-    columnId!: number;
-    color?: typeof colors[number];
-    content?: string;
+    columnId!: string;
+    position!: number;
+    color?: typeof Colors[number];
+    content!: string;
 
     static get jsonSchema(): object {
         return {
@@ -16,7 +16,8 @@ export class Card extends BaseModel {
             properties: {
                 id: { type: 'integer' },
                 content: { type: 'string', minLength: 1 },
-                color: { enum: colors },
+                color: { enum: Colors },
+                position: { type: 'integer' },
             },
         };
     }

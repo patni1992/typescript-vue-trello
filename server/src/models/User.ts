@@ -8,14 +8,14 @@ export class User extends BaseModel {
     static tableName = 'users';
 
     readonly id!: number;
-    firstName?: string;
-    lastName?: string;
-    username?: string;
-    email?: string;
-    password?: string;
+    firstName!: string;
+    lastName!: string;
+    username!: string;
+    email!: string;
+    password!: string;
     isAdmin = false;
-    profileImage?: string;
-    boards!: Array<Board>;
+    profileImage!: string;
+    boards?: Array<Board>;
 
     get hiddenFields(): string[] {
         return ['password', 'createdAt', 'updatedAt', 'isAdmin', 'id'];
