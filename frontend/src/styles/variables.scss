@@ -8,7 +8,6 @@
     --font-size: 1.6rem;
     --header-height: 4rem;
     --gap: 1rem;
-    --bajs: 100%;
 }
 
 [data-theme] {
@@ -20,3 +19,16 @@
 [data-theme='dark'] {
     /* Todo add dark theme */
 }
+
+
+// Colors, use sass varibles to be able to use sass functions
+
+$green: #47B465;
+$orange: #EFA245;
+$blue: #0372B4;
+$red: #EB5A46;
+$light: 10%;
+
+
+
+

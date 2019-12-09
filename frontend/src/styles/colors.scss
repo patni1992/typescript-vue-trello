@@ -1,0 +1,33 @@
+.green{
+    background-color: $green;
+}
+
+.darken-green {
+    background-color: darken($green, $light);
+}
+
+$green: #47B465;
+
+.orange{
+    background-color: $orange;
+}
+
+.darken-orange {
+    background-color: darken($orange, $light);
+}
+
+.red{
+    background-color: $red;
+}
+
+.darken-red {
+    background-color: darken($red, $light);
+}
+
+.blue{
+    background-color: $blue;
+}
+
+.darken-blue {
+    background-color: darken($blue, $light);
+}
