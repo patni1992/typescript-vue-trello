@@ -5,16 +5,16 @@
             <hr class="header-seperator" />
             <add-card @save="addNewCard" />
         </div>
-        <ul :class="`darken-${color}`">
+        <div class="cards" :class="`darken-${color}`">
             <draggable group="cards" v-model="cards">
                 <card v-for="card in cards" :key="card.id" :card="card" />
             </draggable>
-        </ul>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import draggable from 'vuedraggable';
 import cards from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
@@ -22,7 +22,7 @@ import Card from '@/components/Card.vue';
 import AddCard from '@/components/AddCard.vue';
 
 @Component({
-    name: 'column',
+    name: 'Column',
     components: {
         Card,
         draggable,
@@ -33,8 +33,6 @@ export default class Column extends Vue {
     @Prop({ type: Object, default: {} }) column!: ColumnsData;
 
     @Prop(String) color!: string;
-
-    @PropSync('name', { type: String }) syncedName!: string;
 
     addNewCard(value: string) {
         cards.createCard({
@@ -57,10 +55,6 @@ export default class Column extends Vue {
         }
 
         return `${str.slice(0, num)}...`;
-    }
-
-    created() {
-        this.cards = cards.cardsByColumnId(this.column.id);
     }
 }
 </script>

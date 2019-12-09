@@ -4,7 +4,7 @@ import Column from '@/components/Column.vue';
 
 let wrapper: Wrapper<any>;
 
-describe('CreateNewBoardCard', () => {
+describe('Columns', () => {
     beforeEach(() => {
         wrapper = shallowMount(Columns, {
             propsData: {

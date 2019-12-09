@@ -13,7 +13,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import boards from '@/store/boards';
 import Column from '@/components/Column.vue';
 
 @Component({
@@ -22,17 +21,10 @@ import Column from '@/components/Column.vue';
         Column,
     },
 })
-export default class Boards extends Vue {
+export default class Columns extends Vue {
     @Prop(Array) columns!: [];
 
     @Prop(String) color!: string;
-
-    board = boards.emptyBoard;
-
-    async created() {
-        await boards.getBoards();
-        this.board = boards.byId[this.$route.params.id];
-    }
 }
 </script>
 
