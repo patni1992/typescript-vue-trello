@@ -14,6 +14,7 @@ module.exports = {
             directory: './db/migrations',
         },
         seeds: { directory: './db/seeds' },
+        ...knexSnakeCaseMappers(),
     },
     test: {
         client: 'sqlite3',

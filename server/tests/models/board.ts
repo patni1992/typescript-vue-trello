@@ -5,7 +5,7 @@ describe('Board model', () => {
     test('Throw error if color is not allowed', async () => {
         await expect(
             Board.query().insert({
-                color: 'black' as '#FFAB4A',
+                color: 'black' as 'blue',
                 userId: 1,
                 title: 'some board',
             }),

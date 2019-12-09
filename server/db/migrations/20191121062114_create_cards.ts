@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<any> {
 
         t.timestamps(true, true);
         t.text('content');
-        t.enum('color', ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46']).notNullable();
-
+        t.enum('color', ['red', 'green', 'blue', 'orange']).notNullable();
+        t.integer('position');
         t.integer('column_id')
             .unsigned()
             .references('columns.id');

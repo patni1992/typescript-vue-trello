@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<any> {
 
         t.timestamps(true, true);
         t.string('title').notNullable();
-        t.enum('color', ['#0279BF', '#FFAB4A', '#4ABF6B', '#eb5a46']).defaultTo('#0279BF');
+        t.enum('color', ['red', 'green', 'blue', 'orange']).defaultTo('blue');
         t.integer('user_id')
             .unsigned()
             .references('users.id');
