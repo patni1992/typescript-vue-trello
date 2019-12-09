@@ -17,7 +17,7 @@ import boards from '@/store/boards';
 import Column from '@/components/Column.vue';
 
 @Component({
-    name: 'board',
+    name: 'Columns',
     components: {
         Column,
     },
