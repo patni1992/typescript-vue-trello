@@ -1,7 +1,7 @@
 <template>
-    <li :class="`card ${card.color}`">
+    <div :class="`card ${card.color}`">
         <MarkdownRender>{{ card.content }} </MarkdownRender>
-    </li>
+    </div>
 </template>
 
 <script lang="ts">
@@ -22,6 +22,7 @@ export default class Card extends Vue {
 <style lang="scss" scoped>
 $card-border-radius: 3px;
 .card {
+    width: 30rem;
     z-index: 2;
     position: relative;
     background-color: #fff;
@@ -29,6 +30,7 @@ $card-border-radius: 3px;
     padding: var(--gap);
     word-wrap: break-word;
     margin-top: var(--gap);
+    margin-bottom: 1rem;
 
     border-radius: $card-border-radius;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);

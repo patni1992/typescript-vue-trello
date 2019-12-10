@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
-import { formatData } from './helpers';
-import { reOrderCards, addCard } from '../api';
+import { formatData, move } from './helpers';
+import { addCard, reOrderCards } from '../api';
 import store from '@/store';
 import user from './user';
 
@@ -8,6 +8,7 @@ export interface CardsData {
     content: string;
     id: string;
     columnId: string;
+    position: number;
     color: string;
 }
 
@@ -46,21 +47,42 @@ class Card extends VuexModule implements BoardsState {
     @Mutation
     ADD_CARD(card: CardsData) {
         this.byId[card.id] = card;
-        this.allIds.unshift(card.id);
+        this.allIds.splice(card.position, 0, card.id);
+    }
+
+    @Mutation
+    REMOVE_CARD(id: string) {
+        delete this.byId[id];
+        this.allIds = this.allIds.filter(cardId => cardId !== id);
     }
 
     @Action({ rawError: true })
-    public async moveCards(data: { columnId: string; cards: CardsData[] }) {
-        const { columnId, cards } = data;
-        const updatedCards = cards.map(card => ({ ...card, columnId }));
+    public async moveCard(data: { from: number; to: number; action: string; card: CardsData }) {
+        const { from, to, action, card } = data;
 
-        this.MERGE_CARDS(formatData(updatedCards));
+        if (action === 'ADD_CARD') {
+            this.ADD_CARD(card);
+        } else if (action === 'REMOVE_CARD') {
+            this.REMOVE_CARD(card.id);
+        } else if (action === 'MOVE_CARD') {
+            let cards = [...this.cardsByColumnId(card.columnId)];
+            move(cards, from, to);
+
+            cards.map((card, index) => {
+                return {
+                    ...card,
+                    position: index,
+                };
+            });
+
+            this.MERGE_CARDS(formatData(cards));
+        }
 
         if (user.isGuest) {
             return;
         }
 
-        await reOrderCards({ columnId, cardIds: cards.map(card => card.id) });
+        await reOrderCards({ columnId: card.columnId, cardIds: this.cardsByColumnId(card.color).map(card => card.id) });
     }
 
     @Action({ rawError: true })
@@ -70,6 +92,7 @@ class Card extends VuexModule implements BoardsState {
             content,
             id: new Date().valueOf().toString(),
             columnId,
+            position: 0,
             color: '#0279BF',
         };
 

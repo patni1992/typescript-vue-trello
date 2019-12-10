@@ -5,17 +5,24 @@
             <hr class="header-seperator" />
             <add-card @save="addNewCard" />
         </div>
-        <div class="cards" :class="`darken-${color}`">
-            <draggable group="cards" v-model="cards">
-                <card v-for="card in cards" :key="card.id" :card="card" />
+        <container
+            :get-child-payload="getChildPayload"
+            @drop="e => onCardDrop(column.id, e)"
+            group-name="col"
+            class="cards"
+            :class="`darken-${color}`"
+        >
+            <draggable v-for="card in cards" :key="card.id">
+                <card :card="card" />
             </draggable>
-        </div>
+        </container>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import draggable from 'vuedraggable';
+// @ts-ignore
+import { Container, Draggable } from 'vue-smooth-dnd';
 import cards from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
 import Card from '@/components/Card.vue';
@@ -25,7 +32,8 @@ import AddCard from '@/components/AddCard.vue';
     name: 'Column',
     components: {
         Card,
-        draggable,
+        Draggable,
+        Container,
         AddCard,
     },
 })
@@ -41,12 +49,45 @@ export default class Column extends Vue {
         });
     }
 
-    get cards() {
-        return cards.cardsByColumnId(this.column.id);
+    onCardDrop(columnId: any, dropResult: any) {
+        const removing = dropResult.removedIndex !== null && dropResult.addedIndex === null;
+        const adding = dropResult.removedIndex === null && dropResult.addedIndex !== null;
+        const moveSameColumn = dropResult.removedIndex !== null || dropResult.addedIndex !== null;
+        const ignore = dropResult.removedIndex === null && dropResult.addedIndex === null;
+
+        if (ignore) {
+            return;
+        }
+
+        const payload = {
+            from: dropResult.removedIndex,
+            to: dropResult.addedIndex,
+            action: '',
+            card: dropResult.payload,
+        };
+
+        if (removing) {
+            payload.action = 'REMOVE_CARD';
+            cards.moveCard(payload);
+        } else if (adding) {
+            this.$nextTick(() => {
+                payload.card.columnId = columnId;
+                payload.card.position = dropResult.addedIndex;
+                payload.action = 'ADD_CARD';
+                cards.moveCard(payload);
+            });
+        } else if (moveSameColumn) {
+            payload.action = 'MOVE_CARD';
+            cards.moveCard(payload);
+        }
     }
 
-    set cards(v) {
-        cards.moveCards({ columnId: this.column.id, cards: v });
+    getChildPayload(index: number) {
+        return this.cards[index];
+    }
+
+    get cards() {
+        return cards.cardsByColumnId(this.column.id);
     }
 
     truncateString(str: string, num: number) {
@@ -68,7 +109,10 @@ $list-border-radius: 5px;
 $list-bg-color: #e2e4e6;
 
 .column {
-    width: $column-width;
+    /* width: $column-width; */
+    display: table-cell;
+    padding: 1rem;
+    min-width: 30rem;
     height: calc(100% - var(--gap) - #{$scrollbar-thickness});
 
     > * {
@@ -101,16 +145,6 @@ $list-bg-color: #e2e4e6;
             position: relative;
             color: white;
         }
-    }
-
-    .footer {
-        line-height: $list-footer-height;
-        border-bottom-left-radius: $list-border-radius;
-        border-bottom-right-radius: $list-border-radius;
-        background-color: transparent;
-        color: white;
-        cursor: pointer;
-        padding: 2.5rem 1rem;
     }
 
     ul {

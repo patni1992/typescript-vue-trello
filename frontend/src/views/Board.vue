@@ -36,8 +36,10 @@ export default class Boards extends Vue {
 <style lang="scss" scoped>
 .container {
     padding-top: 1.2rem;
-
+    overflow: auto;
     color: #eee;
+    height: 100%;
+    width: 100%;
 }
 
 .board-header {
