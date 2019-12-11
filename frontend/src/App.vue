@@ -60,6 +60,6 @@ body {
     height: 100%;
 }
 .app {
-    height: inherit;
+    height: calc(100% - var(--header-height));
 }
 </style>

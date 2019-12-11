@@ -98,7 +98,7 @@ class Card extends VuexModule implements BoardsState {
             id: new Date().valueOf(),
             columnId,
             position: 0,
-            color: '#0279BF',
+            color: 'blue',
         };
 
         this.ADD_CARD(newCard);
