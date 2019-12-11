@@ -67,17 +67,17 @@ export default class Column extends Vue {
         };
 
         if (removing) {
-            payload.action = 'REMOVE_CARD';
+            payload.action = 'REMOVE_CARD_COLUMN';
             cards.moveCard(payload);
         } else if (adding) {
             this.$nextTick(() => {
                 payload.card.columnId = columnId;
                 payload.card.position = dropResult.addedIndex;
-                payload.action = 'ADD_CARD';
+                payload.action = 'ADD_CARD_COLUMN';
                 cards.moveCard(payload);
             });
         } else if (moveSameColumn) {
-            payload.action = 'MOVE_CARD';
+            payload.action = 'MOVE_CARD_SAME_COLUMN';
             cards.moveCard(payload);
         }
     }
@@ -109,10 +109,10 @@ $list-border-radius: 5px;
 $list-bg-color: #e2e4e6;
 
 .column {
-    /* width: $column-width; */
     display: table-cell;
     padding: 1rem;
     min-width: 30rem;
+    max-width: 34rem;
     height: calc(100% - var(--gap) - #{$scrollbar-thickness});
 
     > * {

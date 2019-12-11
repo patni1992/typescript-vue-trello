@@ -47,7 +47,7 @@ class Card extends VuexModule implements BoardsState {
     @Mutation
     ADD_CARD(card: CardsData) {
         this.byId[card.id] = card;
-        this.allIds.splice(card.position, 0, card.id);
+        this.allIds.unshift(card.id);
     }
 
     @Mutation
@@ -60,11 +60,13 @@ class Card extends VuexModule implements BoardsState {
     public async moveCard(data: { from: number; to: number; action: string; card: CardsData }) {
         const { from, to, action, card } = data;
 
-        if (action === 'ADD_CARD') {
-            this.ADD_CARD(card);
-        } else if (action === 'REMOVE_CARD') {
+        if (action === 'ADD_CARD_COLUMN') {
+            const cardsInSameColumn = [...this.cardsByColumnId(card.columnId)];
+            cardsInSameColumn.splice(card.position, 0, card);
+            this.MERGE_CARDS(formatData(cardsInSameColumn));
+        } else if (action === 'REMOVE_CARD_COLUMN') {
             this.REMOVE_CARD(card.id);
-        } else if (action === 'MOVE_CARD') {
+        } else if (action === 'MOVE_CARD_SAME_COLUMN') {
             let cards = [...this.cardsByColumnId(card.columnId)];
             move(cards, from, to);
 
@@ -82,7 +84,10 @@ class Card extends VuexModule implements BoardsState {
             return;
         }
 
-        await reOrderCards({ columnId: card.columnId, cardIds: this.cardsByColumnId(card.color).map(card => card.id) });
+        await reOrderCards({
+            columnId: card.columnId,
+            cardIds: this.cardsByColumnId(card.columnId).map(card => card.id),
+        });
     }
 
     @Action({ rawError: true })
