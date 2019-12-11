@@ -38,8 +38,13 @@ export const addCard = (card: CardsData) => {
 };
 
 export const reOrderCards = (data: { columnId: number; cardIds: number[] }) => {
-    return api.patch<ColumnsWithCards>(`/cards/reorder`, data);
+    return api.patch<number[]>(`/cards/reorder`, data);
 };
+
+export const reOrderColumns = (data: { boardId: number; columnIds: number[] }) => {
+    return api.patch<number[]>(`/columns/reorder`, data);
+};
+
 
 export const fetchColumnsWithCards = (boardId: number) => {
     return api.get<ColumnsWithCards[]>(`/columns`, {

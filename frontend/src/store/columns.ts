@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchColumnsWithCards } from '@/api';
+import { fetchColumnsWithCards, reOrderColumns } from '@/api';
 import cardsModule, { CardsData } from './cards';
 import store from '@/store';
 import { formatData, move } from './helpers';
@@ -66,7 +66,7 @@ class Column extends VuexModule implements ColumnsState {
     }
 
     @Action
-    moveColumn(data: { from: number; to: number; boardId: number; columnId: number }) {
+    async moveColumn(data: { from: number; to: number; boardId: number; columnId: number }) {
         const { from, to, boardId } = data;
         let columns = [...this.getColumnsByBoardId(boardId)];
 
@@ -80,6 +80,15 @@ class Column extends VuexModule implements ColumnsState {
         });
 
         this.MERGE_COLUMNS(formatData(columns));
+
+        if (user.isGuest) {
+            return;
+        }
+
+        await reOrderColumns({
+            boardId,
+            columnIds: this.getColumnsByBoardId(boardId).map(column => column.id),
+        });
     }
 
     @Mutation
