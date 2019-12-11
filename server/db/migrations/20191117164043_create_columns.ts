@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<any> {
 
         t.timestamps(true, true);
         t.string('title').notNullable();
-
+        t.integer('position');
         t.integer('board_id')
             .unsigned()
             .references('boards.id');

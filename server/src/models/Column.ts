@@ -6,6 +6,7 @@ export class Column extends BaseModel {
     static tableName = 'columns';
     readonly id!: number;
     boardId!: number;
+    position!: number;
     title!: string;
     cards?: Array<Card>;
 
