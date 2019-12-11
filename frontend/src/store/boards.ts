@@ -7,7 +7,7 @@ import user from './user';
 
 export interface BoardsData {
     title: string;
-    id: string;
+    id: number;
     userId: number;
     color: string;
 }
@@ -18,8 +18,8 @@ export interface NewBoard {
 }
 
 export interface BoardsState {
-    byId: { [key: string]: BoardsData };
-    allIds: string[];
+    byId: { [key: number]: BoardsData };
+    allIds: number[];
 }
 
 @Module({
@@ -31,7 +31,7 @@ export interface BoardsState {
 class Board extends VuexModule implements BoardsState {
     byId: BoardsState['byId'] = {};
 
-    allIds: string[] = [];
+    allIds: number[] = [];
 
     get getAllBoards() {
         return this.allIds.map(id => this.byId[id]);
@@ -40,7 +40,7 @@ class Board extends VuexModule implements BoardsState {
     get emptyBoard(): BoardsData {
         return {
             title: '',
-            id: '',
+            id: 0,
             userId: 0,
             color: '',
         };
@@ -83,14 +83,14 @@ class Board extends VuexModule implements BoardsState {
     }
 
     @Mutation
-    REPLACE_BOARD(boardId: string, newBoard: BoardsData) {
+    REPLACE_BOARD(boardId: number, newBoard: BoardsData) {
         this.byId[newBoard.id] = newBoard;
         this.allIds[this.allIds.indexOf(newBoard.id)] = newBoard.id;
         delete this.byId[boardId];
     }
 
     @Mutation
-    SET_BOARDS(boards: { allIds: string[]; byId: { [key: string]: BoardsData } }) {
+    SET_BOARDS(boards: { allIds: number[]; byId: { [key: number]: BoardsData } }) {
         this.byId = boards.byId;
         this.allIds = boards.allIds;
     }

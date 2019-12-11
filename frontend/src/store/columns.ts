@@ -8,15 +8,15 @@ import user from './user';
 
 export interface ColumnsData {
     title: string;
-    id: string;
-    boardId: string;
+    id: number;
+    boardId: number;
     createdAt: string;
     cards: CardsData[];
 }
 
 export interface ColumnsState {
-    byId: { [key: string]: ColumnsData };
-    allIds: string[];
+    byId: { [key: number]: ColumnsData };
+    allIds: number[];
 }
 
 @Module({
@@ -28,7 +28,7 @@ export interface ColumnsState {
 class Column extends VuexModule implements ColumnsState {
     byId: ColumnsState['byId'] = {};
 
-    allIds: string[] = [];
+    allIds: number[] = [];
 
     get getAllColumns() {
         return Object.values(this.byId);
@@ -39,7 +39,7 @@ class Column extends VuexModule implements ColumnsState {
     }
 
     @Action({ rawError: true })
-    public async getColumnsAndCards(id: string) {
+    public async getColumnsAndCards(id: number) {
         let data = this.guestColumnsWithCards.filter(column => column.boardId === id);
 
         if (!user.isGuest) {
@@ -61,7 +61,7 @@ class Column extends VuexModule implements ColumnsState {
     }
 
     @Mutation
-    SET_COLUMNS(columns: { allIds: string[]; byId: { [key: string]: ColumnsData } }) {
+    SET_COLUMNS(columns: { allIds: number[]; byId: { [key: number]: ColumnsData } }) {
         this.byId = columns.byId;
         this.allIds = columns.allIds;
     }

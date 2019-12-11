@@ -1,18 +1,18 @@
 export const guestBoards = [
     {
-        id: '10',
+        id: 10,
         title: 'Tutorial',
         color: '#0279BF',
         userId: 0,
     },
     {
-        id: '11',
+        id: 11,
         title: 'Client SPA React',
         color: '#4ABF6B',
         userId: 0,
     },
     {
-        id: '12',
+        id: 12,
         title: 'Javascript resources',
         color: '#FFAB4A',
         userId: 0,
@@ -21,21 +21,21 @@ export const guestBoards = [
 
 export const columnsWithCards = [
     {
-        id: '10',
-        boardId: '10',
+        id: 10,
+        boardId: 10,
         title: 'Todo',
         createdAt: '2019-12-02T23:53:51.000Z',
         cards: [
             {
-                id: '1',
-                columnId: '10',
+                id: 1,
+                columnId: 10,
                 content: `## Welcome to kanban-board in React
       `,
                 color: '#eb5a46',
             },
             {
-                id: '2',
-                columnId: '10',
+                id: 2,
+                columnId: 10,
                 content: `Cards support markup for more information see \n \n
           \n [**Markdown Cheatsheet**](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)`,
                 color: '#0279BF',
@@ -43,14 +43,14 @@ export const columnsWithCards = [
         ],
     },
     {
-        id: '1338',
-        boardId: '10',
+        id: 1338,
+        boardId: 10,
         title: 'In Progress',
         createdAt: '2019-12-02T23:53:51.000Z',
         cards: [
             {
-                id: '3',
-                columnId: '1338',
+                id: 3,
+                columnId: 1338,
                 content: `  - [ ] Move a card
       \n - [ ] Create a card
       \n  - [ ] Move a list
@@ -61,8 +61,8 @@ export const columnsWithCards = [
         ],
     },
     {
-        id: '1339',
-        boardId: '10',
+        id: 1339,
+        boardId: 10,
         title: 'Done',
         createdAt: '2019-12-02T23:53:51.000Z',
         cards: [

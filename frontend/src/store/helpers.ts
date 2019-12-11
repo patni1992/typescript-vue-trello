@@ -1,5 +1,5 @@
 export function formatData<T>(entities: T[]) {
-    const mappedData: { allIds: string[]; byId: { [key: string]: T } } = { allIds: [], byId: {} };
+    const mappedData: { allIds: number[]; byId: { [key: number]: T } } = { allIds: [], byId: {} };
 
     entities.forEach((entity: any) => {
         mappedData.byId[entity.id] = entity;

@@ -1,7 +1,7 @@
 <template>
     <div :class="`container ${board.color}`">
         <h2 class="board-header">{{ board.title }}</h2>
-        <Columns :columns="columns" :color="board.color" />
+        <Columns :columns="columns" :color="board.color" :boardId="board.id" />
     </div>
 </template>
 
@@ -24,7 +24,7 @@ export default class Boards extends Vue {
 
     async created() {
         await Promise.all([
-            columns.getColumnsAndCards(this.$route.params.id),
+            columns.getColumnsAndCards(Number(this.$route.params.id)),
             boards.getBoardById(Number(this.$route.params.id)),
         ]);
         this.board = boards.byId[Number(this.$route.params.id)];
