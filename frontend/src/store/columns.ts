@@ -2,7 +2,7 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 import { fetchColumnsWithCards } from '@/api';
 import cardsModule, { CardsData } from './cards';
 import store from '@/store';
-import { formatData } from './helpers';
+import { formatData, move } from './helpers';
 import { columnsWithCards } from './guestData';
 import user from './user';
 
@@ -12,6 +12,7 @@ export interface ColumnsData {
     boardId: number;
     createdAt: string;
     cards: CardsData[];
+    position: number;
 }
 
 export interface ColumnsState {
@@ -30,10 +31,14 @@ class Column extends VuexModule implements ColumnsState {
 
     allIds: number[] = [];
 
-    get getAllColumns() {
-        return Object.values(this.byId);
-    }
+    get getColumnsByBoardId() {
+        return (boardId: number) => {
+            const columns = Object.values(this.byId).filter(column => column.boardId === boardId);
+            const columnIds = this.allIds.filter(id => columns.some(column => column.id === id));
 
+            return columnIds.map((id: number) => this.byId[id]);
+        };
+    }
     private get guestColumnsWithCards() {
         return columnsWithCards;
     }
@@ -56,14 +61,38 @@ class Column extends VuexModule implements ColumnsState {
             cards: col.cards.map((card: any) => card.id),
         }));
 
-        this.SET_COLUMNS(formatData(columns));
+        this.MERGE_COLUMNS(formatData(columns));
         return data;
+    }
+
+    @Action
+    moveColumn(data: { from: number; to: number; boardId: number; columnId: number }) {
+        const { from, to, boardId } = data;
+        let columns = [...this.getColumnsByBoardId(boardId)];
+
+        move(columns, from, to);
+
+        columns = columns.map((column, index) => {
+            return {
+                ...column,
+                position: index,
+            };
+        });
+
+        this.MERGE_COLUMNS(formatData(columns));
     }
 
     @Mutation
     SET_COLUMNS(columns: { allIds: number[]; byId: { [key: number]: ColumnsData } }) {
         this.byId = columns.byId;
         this.allIds = columns.allIds;
+    }
+
+    @Mutation
+    MERGE_COLUMNS(columns: { allIds: number[]; byId: { [key: number]: ColumnsData } }) {
+        const uniqueValues = this.allIds.filter(val => !columns.allIds.includes(val));
+        this.allIds = [...uniqueValues, ...columns.allIds];
+        this.byId = { ...this.byId, ...columns.byId };
     }
 }
 

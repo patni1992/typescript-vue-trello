@@ -49,7 +49,7 @@ export default class Column extends Vue {
         });
     }
 
-    onCardDrop(columnId: any, dropResult: any) {
+    onCardDrop(columnId: number, dropResult: any) {
         const removing = dropResult.removedIndex !== null && dropResult.addedIndex === null;
         const adding = dropResult.removedIndex === null && dropResult.addedIndex !== null;
         const moveSameColumn = dropResult.removedIndex !== null || dropResult.addedIndex !== null;

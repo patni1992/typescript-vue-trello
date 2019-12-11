@@ -1,5 +1,5 @@
 <template>
-    <Container orientation="horizontal">
+    <Container :get-child-payload="getChildPayload" @drop="onColumnDrop" orientation="horizontal">
         <Draggable v-for="column in columns" :key="column.id">
             <column :color="color" :column="column" />
         </Draggable>
@@ -18,6 +18,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Container, Draggable } from 'vue-smooth-dnd';
 import Column from '@/components/Column.vue';
+import columns from '@/store/columns';
 
 @Component({
     name: 'Columns',
@@ -27,10 +28,31 @@ import Column from '@/components/Column.vue';
         Draggable,
     },
 })
+interface DropResponse {
+    removedIndex: number;
+    addedIndex: number;
+    payload: any;
+}
+
 export default class Columns extends Vue {
     @Prop(Array) columns!: [];
 
     @Prop(String) color!: string;
+
+    @Prop(Number) boardId!: number;
+
+    getChildPayload(index: number) {
+        return this.columns[index];
+    }
+
+    onColumnDrop(dropResult: DropResponse) {
+        columns.moveColumn({
+            from: dropResult.removedIndex,
+            to: dropResult.addedIndex,
+            columnId: dropResult.payload.id,
+            boardId: this.boardId,
+        });
+    }
 }
 </script>
 

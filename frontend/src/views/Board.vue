@@ -20,15 +20,16 @@ import Columns from '@/components/Columns.vue';
 export default class Boards extends Vue {
     board = boards.emptyBoard;
 
-    columns: ColumnsData[] = [];
+    get columns() {
+        const boardId = Number(this.$route.params.id);
+        return columns.getColumnsByBoardId(boardId);
+    }
 
     async created() {
-        await Promise.all([
-            columns.getColumnsAndCards(Number(this.$route.params.id)),
-            boards.getBoardById(Number(this.$route.params.id)),
-        ]);
-        this.board = boards.byId[Number(this.$route.params.id)];
-        this.columns = columns.getAllColumns;
+        const boardId = Number(this.$route.params.id);
+        await Promise.all([columns.getColumnsAndCards(boardId), boards.getBoardById(boardId)]);
+
+        this.board = boards.byId[boardId];
     }
 }
 </script>
