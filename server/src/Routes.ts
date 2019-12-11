@@ -30,6 +30,8 @@ export class Routes {
             .get(auth, this.columnsController.index)
             .post(this.columnsController.create);
 
+        app.route('/columns/reorder').patch(this.columnsController.reOrder);
+
         app.route('/cards/reorder').patch(auth, this.CardsController.reOrder);
 
         app.route('/users')

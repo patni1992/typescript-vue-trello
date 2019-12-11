@@ -12,6 +12,7 @@ export class ColumnsController {
         }
         const columns = await Column.query()
             .where('board_id', req.query.boardId)
+            .orderBy('position')
             .allowEager('cards')
             .eager(req.query.include);
 
@@ -37,5 +38,26 @@ export class ColumnsController {
         }
 
         res.sendStatus(400);
+    }
+
+    public async reOrder(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+        const { columnIds, boardId } = req.body;
+
+        if (!Array.isArray(columnIds)) {
+            return next(new HttpException(400, 'a list with columnsIds is required'));
+        }
+
+        if (!boardId) {
+            return next(new HttpException(400, 'boardId is required'));
+        }
+
+        await Column.query()
+            .findById(boardId)
+            .throwIfNotFound();
+
+        const columns = await Column.query().whereIn('id', columnIds);
+        columns.forEach(async column => await column.$query().patch({ position: columnIds.indexOf(column.id) }));
+
+        return res.send(columnIds);
     }
 }
