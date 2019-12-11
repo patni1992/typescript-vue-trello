@@ -20,6 +20,12 @@ import { Container, Draggable } from 'vue-smooth-dnd';
 import Column from '@/components/Column.vue';
 import columns from '@/store/columns';
 
+interface DropResponse {
+    removedIndex: number;
+    addedIndex: number;
+    payload: any;
+}
+
 @Component({
     name: 'Columns',
     components: {
@@ -28,12 +34,6 @@ import columns from '@/store/columns';
         Draggable,
     },
 })
-interface DropResponse {
-    removedIndex: number;
-    addedIndex: number;
-    payload: any;
-}
-
 export default class Columns extends Vue {
     @Prop(Array) columns!: [];
 
