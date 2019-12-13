@@ -3,7 +3,7 @@
         <div :class="`header darken-${color}`">
             <h2 class="header-title">{{ truncateString(column.title, 63) }}</h2>
             <hr class="header-seperator" />
-            <add-card @save="addNewCard" />
+            <add-item label="Add a card" type="textarea" @save="addNewCard" />
         </div>
         <container
             :get-child-payload="getChildPayload"
@@ -26,7 +26,7 @@ import { Container, Draggable } from 'vue-smooth-dnd';
 import cards from '@/store/cards';
 import { ColumnsData } from '@/store/columns';
 import Card from '@/components/Card.vue';
-import AddCard from '@/components/AddCard.vue';
+import AddItem from '@/components/AddItem.vue';
 
 @Component({
     name: 'Column',
@@ -34,7 +34,7 @@ import AddCard from '@/components/AddCard.vue';
         Card,
         Draggable,
         Container,
-        AddCard,
+        AddItem,
     },
 })
 export default class Column extends Vue {

@@ -10,6 +10,7 @@
     <input
         v-else
         class="input"
+        :class="{ small: small }"
         v-bind="$attrs"
         :type="type"
         :value="value"
@@ -27,6 +28,8 @@ export default class AppInput extends Vue {
     @Prop(String) value!: string;
 
     @Prop({ default: 'text' }) type!: string;
+
+    @Prop(Boolean) small!: boolean;
 
     @Prop(Boolean) required!: boolean;
 
@@ -49,6 +52,10 @@ export default class AppInput extends Vue {
     color: black;
     font-size: 1.6rem;
     border-radius: 0.4rem;
+}
+
+.small {
+    padding: 0.6rem 0.8rem;
 }
 
 .textarea {

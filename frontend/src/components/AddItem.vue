@@ -1,18 +1,18 @@
 <template>
     <div class="add-card">
-        <p v-if="!showAddInput" @click="setShowAddInput($event, true)">
-            Add a card
+        <p :class="{ big: big }" v-if="!showAddInput" @click="setShowAddInput($event, true)">
+            {{ label }}
             <font-awesome-icon class="add-card-icon" :icon="['far', 'plus']" />
         </p>
         <AppInput
             class="app-input"
             @keyup.enter.native.exact="save"
             v-model="title"
-            type="textarea"
+            :type="type"
             ref="input"
             v-click-outside="vcoConfig"
             v-else
-            placeholder="Enter some markdown"
+            :placeholder="placeholder"
         />
     </div>
 </template>
@@ -23,14 +23,20 @@ import Card from '@/components/Card.vue';
 import AppInput from '@/components/AppInput.vue';
 
 @Component({
-    name: 'AddCard',
+    name: 'AddItem',
     components: {
         Card,
         AppInput,
     },
 })
 export default class AddInput extends Vue {
-    @Prop(String) value!: string;
+    @Prop(String) type!: 'textarea' | 'input';
+
+    @Prop(String) label!: string;
+
+    @Prop(Boolean) big!: boolean;
+
+    @Prop(String) placeholder!: string;
 
     vcoConfig = {
         handler: this.setShowAddInput,
@@ -63,6 +69,10 @@ export default class AddInput extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.big {
+    font-weight: 700;
+    font-size: 1.8rem;
+}
 .add-card {
     padding: 0.6rem 0;
     cursor: pointer;

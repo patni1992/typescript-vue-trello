@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchColumnsWithCards, reOrderColumns } from '@/api';
+import { fetchColumnsWithCards, reOrderColumns, addColumn } from '@/api';
 import cardsModule, { CardsData } from './cards';
 import store from '@/store';
 import { formatData, move } from './helpers';
@@ -89,6 +89,36 @@ class Column extends VuexModule implements ColumnsState {
             boardId,
             columnIds: this.getColumnsByBoardId(boardId).map(column => column.id),
         });
+    }
+
+    @Action({ rawError: true })
+    public async createColumn(data: { title: string; boardId: number }) {
+        const { title, boardId } = data;
+
+        const newColumn = {
+            title,
+            id: new Date().valueOf(),
+            boardId,
+            position: 0,
+            cards: [],
+            createdAt: '',
+        };
+
+        this.ADD_COLUMN(newColumn);
+
+        if (user.isGuest) {
+            return;
+        }
+
+        const result = await addColumn(newColumn);
+
+        return result;
+    }
+
+    @Mutation
+    ADD_COLUMN(column: ColumnsData) {
+        this.byId[column.id] = column;
+        this.allIds.push(column.id);
     }
 
     @Mutation

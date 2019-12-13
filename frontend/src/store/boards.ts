@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchBoards, fetchBoardById, createBoard } from '@/api';
+import { fetchBoards, fetchBoardById, createBoard, updateBoard, removeBoard } from '@/api';
 import { formatData } from './helpers';
 import { guestBoards } from './guestData';
 import store from '@/store';
@@ -15,6 +15,12 @@ export interface BoardsData {
 export interface NewBoard {
     title: string;
     color: string;
+}
+
+export interface UpdateBoard {
+    title?: string;
+    color?: string;
+    id: number;
 }
 
 export interface BoardsState {
@@ -76,10 +82,41 @@ class Board extends VuexModule implements BoardsState {
         this.ADD_BOARD(response.data);
     }
 
+    @Action({ rawError: true })
+    public async editBoard(updatedBoard: UpdateBoard) {
+        this.UPDATE_BOARD(updatedBoard);
+
+        const response = await updateBoard(updatedBoard);
+
+        return response;
+    }
+
+    @Action({ rawError: true })
+    public async deleteBoard(id: number) {
+        this.DELETE_BOARD(id);
+        if (!user.isGuest) {
+            await removeBoard(id);
+        }
+    }
+
+    @Mutation
+    DELETE_BOARD(id: number) {
+        delete this.byId[id];
+        this.allIds = this.allIds.filter(val => val !== id);
+    }
+
     @Mutation
     ADD_BOARD(board: BoardsData) {
         this.byId = { ...this.byId, [board.id]: board };
         this.allIds.unshift(board.id);
+    }
+
+    @Mutation
+    UPDATE_BOARD(updateBoard: UpdateBoard) {
+        this.byId[updateBoard.id] = {
+            ...this.byId[updateBoard.id],
+            ...updateBoard,
+        };
     }
 
     @Mutation
