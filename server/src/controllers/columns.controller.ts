@@ -27,7 +27,9 @@ export class ColumnsController {
 
     public async create(req: ExtendedRequest, res: Response, next: NextFunction): Promise<any> {
         const { title, boardId } = req.body;
-        const board = await Board.query().findById(boardId);
+        const board = await Board.query()
+            .findById(boardId)
+            .throwIfNotFound();
 
         const data = {
             title,
@@ -38,6 +40,25 @@ export class ColumnsController {
         }
 
         res.sendStatus(400);
+    }
+
+    public async update(req: ExtendedRequest, res: Response, next: NextFunction): Promise<any> {
+        const { title } = req.body;
+        const column = await Column.query()
+            .patchAndFetchById(req.params.id, {
+                title,
+            })
+            .throwIfNotFound();
+
+        res.send(column);
+    }
+
+    public async delete(req: ExtendedRequest, res: Response, next: NextFunction): Promise<any> {
+        await Column.query()
+            .deleteById(req.params.id)
+            .throwIfNotFound();
+
+        res.sendStatus(204);
     }
 
     public async reOrder(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
