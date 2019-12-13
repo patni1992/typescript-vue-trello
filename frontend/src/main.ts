@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import './registerServiceWorker';
 import './styles/main.scss';
+import Snotify from 'vue-snotify';
 // @ts-ignore
 import vClickOutside from 'v-click-outside';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -19,6 +20,7 @@ library.add(faTrashAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(vClickOutside);
+Vue.use(Snotify);
 
 Vue.config.productionTip = false;
 
