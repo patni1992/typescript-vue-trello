@@ -42,4 +42,22 @@ export class BoardsController {
 
         res.send(board);
     }
+
+    public async delete(req: ExtendedRequest, res: Response): Promise<any> {
+        await Board.query()
+            .deleteById(req.params.id)
+            .throwIfNotFound();
+
+        res.sendStatus(200);
+    }
+
+    public async update(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+        const { title, color } = req.body;
+
+        const board = await Board.query()
+            .patchAndFetchById(req.params.id, { title, color })
+            .throwIfNotFound();
+
+        res.send(board);
+    }
 }
