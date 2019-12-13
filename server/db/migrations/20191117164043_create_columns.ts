@@ -11,7 +11,8 @@ export async function up(knex: Knex): Promise<any> {
         t.integer('position');
         t.integer('board_id')
             .unsigned()
-            .references('boards.id');
+            .references('boards.id')
+            .onDelete('CASCADE');
     });
 }
 
