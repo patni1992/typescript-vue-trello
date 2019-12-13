@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { fetchColumnsWithCards, reOrderColumns, addColumn } from '@/api';
+import { fetchColumnsWithCards, reOrderColumns, addColumn, updateColumn, removeColumn } from '@/api';
 import cardsModule, { CardsData } from './cards';
 import store from '@/store';
 import { formatData, move } from './helpers';
@@ -18,6 +18,11 @@ export interface ColumnsData {
 export interface ColumnsState {
     byId: { [key: number]: ColumnsData };
     allIds: number[];
+}
+
+export interface UpdateColumn {
+    title: string;
+    id: number;
 }
 
 @Module({
@@ -113,6 +118,43 @@ class Column extends VuexModule implements ColumnsState {
         const result = await addColumn(newColumn);
 
         return result;
+    }
+
+    @Action({ rawError: true })
+    public async editColumn(updatedColumn: UpdateColumn) {
+        this.EDIT_COLUMN(updatedColumn);
+
+        if (user.isGuest) {
+            return;
+        }
+
+        const result = await updateColumn(updatedColumn);
+
+        return result;
+    }
+
+    @Action({ rawError: true })
+    public async deleteColumn(id: number) {
+        this.DELETE_COLUMN(id);
+
+        if (user.isGuest) {
+            return;
+        }
+
+        const result = await removeColumn(id);
+
+        return result;
+    }
+
+    @Mutation
+    DELETE_COLUMN(id: number) {
+        delete this.byId[id];
+        this.allIds = this.allIds.filter(val => val !== id);
+    }
+
+    @Mutation
+    EDIT_COLUMN(updatedColumn: UpdateColumn) {
+        this.byId[updatedColumn.id] = { ...this.byId[updatedColumn.id], ...updatedColumn };
     }
 
     @Mutation

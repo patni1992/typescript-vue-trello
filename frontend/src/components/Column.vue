@@ -1,7 +1,17 @@
 <template>
     <div class="column">
         <div :class="`header darken-${color}`">
-            <h2 class="header-title">{{ truncateString(column.title, 63) }}</h2>
+            <!-- <h2 class="header-title">{{ truncateString(column.title, 63) }}</h2> -->
+
+            <add-item
+                big
+                useHeader
+                :textValue="column.title"
+                :label="column.title"
+                type="input"
+                @remove="deleteColumn"
+                @save="editColumn"
+            />
             <hr class="header-seperator" />
             <add-item label="Add a card" type="textarea" @save="addNewCard" />
         </div>
@@ -24,7 +34,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 // @ts-ignore
 import { Container, Draggable } from 'vue-smooth-dnd';
 import cards from '@/store/cards';
-import { ColumnsData } from '@/store/columns';
+import columns, { ColumnsData } from '@/store/columns';
 import Card from '@/components/Card.vue';
 import AddItem from '@/components/AddItem.vue';
 
@@ -47,6 +57,17 @@ export default class Column extends Vue {
             content: value,
             columnId: this.column.id,
         });
+    }
+
+    editColumn(value: string) {
+        columns.editColumn({
+            title: value,
+            id: this.column.id,
+        });
+    }
+
+    deleteColumn() {
+        columns.deleteColumn(this.column.id);
     }
 
     onCardDrop(columnId: number, dropResult: any) {
@@ -134,6 +155,7 @@ $list-bg-color: #e2e4e6;
 
         &-title {
             font-size: 1.8rem;
+            cursor: pointer;
         }
 
         &-seperator {

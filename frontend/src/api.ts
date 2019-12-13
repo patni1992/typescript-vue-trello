@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { UserInfo, UserLogin } from '@/store/user';
 import { BoardsData, NewBoard, UpdateBoard } from '@/store/boards';
-import { ColumnsData } from '@/store/columns';
+import { ColumnsData, UpdateColumn } from '@/store/columns';
 import { CardsData } from '@/store/cards';
 
 export const api = axios.create({
@@ -50,7 +50,15 @@ export const reOrderCards = (data: { columnId: number; cardIds: number[] }) => {
 };
 
 export const addColumn = (column: ColumnsData) => {
-    return api.post<CardsData>(`/boards/${column.boardId}/columns`, column);
+    return api.post<ColumnsData>(`/boards/${column.boardId}/columns`, column);
+};
+
+export const updateColumn = (column: UpdateColumn) => {
+    return api.put<ColumnsData>(`/columns/${column.id}`, column);
+};
+
+export const removeColumn = (id: number) => {
+    return api.delete<ColumnsData>(`/columns/${id}`);
 };
 
 export const reOrderColumns = (data: { boardId: number; columnIds: number[] }) => {
