@@ -27,8 +27,4 @@ describe('Columns', () => {
         expect(wrapper.find(Column).props().color).toBe('blue');
         expect(wrapper.find(Column).props().column.id).toBe(1);
     });
-
-    test('has add column', () => {
-        expect(wrapper.element.innerHTML.includes(' Add a column')).toBe(true);
-    });
 });

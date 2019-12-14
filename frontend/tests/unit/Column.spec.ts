@@ -2,6 +2,7 @@ import { shallowMount, Wrapper } from '@vue/test-utils';
 import Column from '@/components/Column.vue';
 import cards from '@/store/cards';
 import Card from '@/components/Card.vue';
+import AppItem from '@/components/AddItem.vue';
 
 let wrapper: Wrapper<any>;
 
@@ -28,8 +29,8 @@ describe('Column', () => {
         expect(wrapper.isVueInstance()).toBeTruthy();
     });
 
-    test('display title from props', () => {
-        expect(wrapper.find('.header-title').text()).toBe('Test column');
+    test('pass title from props', () => {
+        expect(wrapper.find(AppItem).props().label).toBe('Test column');
     });
 
     test('apply color prop as class', () => {

@@ -2,9 +2,10 @@
     <textarea
         v-if="type == 'textarea'"
         class="input textarea"
-        :value="value"
+        :style="{ height: inputHeight }"
         v-bind="$attrs"
-        @input="input($event.target.value)"
+        v-model="currentValue"
+        ref="textarea"
     />
 
     <input
@@ -13,14 +14,13 @@
         :class="{ small: small }"
         v-bind="$attrs"
         :type="type"
-        :value="value"
         :required="required"
-        @input="input($event.target.value)"
+        v-model="currentValue"
     />
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 @Component({
     name: 'AppInput',
 })
@@ -32,6 +32,40 @@ export default class AppInput extends Vue {
     @Prop(Boolean) small!: boolean;
 
     @Prop(Boolean) required!: boolean;
+
+    $refs!: {
+        textarea: HTMLFormElement;
+    };
+
+    inputHeight = '0';
+    currentValue = '';
+
+    resize() {
+        if (!this.$refs.textarea) {
+            return;
+        }
+        const height = this.currentValue.trim() ? this.$refs.textarea.scrollHeight : 120;
+        this.inputHeight = `${height}px`;
+    }
+
+    created() {
+        this.currentValue = this.value;
+    }
+
+    mounted() {
+        if (this.type === 'textarea') {
+            this.resize();
+        }
+    }
+
+    @Watch('currentValue')
+    oncurrentValueChanged(v: string) {
+        if (this.type === 'textarea') {
+            this.resize();
+        }
+
+        this.$emit('input', this.currentValue);
+    }
 
     @Emit()
     input() {}
@@ -60,6 +94,6 @@ export default class AppInput extends Vue {
 
 .textarea {
     resize: vertical;
-    height: 10rem;
+    min-height: 12rem;
 }
 </style>

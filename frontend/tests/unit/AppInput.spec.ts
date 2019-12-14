@@ -3,7 +3,7 @@ import AppInput from '@/components/AppInput.vue';
 
 let wrapper: Wrapper<any>;
 
-describe('AppButton', () => {
+describe('AppUnput', () => {
     beforeEach(() => {
         wrapper = shallowMount(AppInput);
     });
@@ -49,7 +49,6 @@ describe('AppButton', () => {
 
     test('changing input value emits input event', () => {
         wrapper.find('input').setValue('hello 392439');
-
-        expect(wrapper.emitted().input[0]).toEqual(['hello 392439']);
+        expect(wrapper.emitted().input).toContainEqual(['hello 392439']);
     });
 });
