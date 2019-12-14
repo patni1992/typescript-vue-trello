@@ -78,8 +78,22 @@ class Board extends VuexModule implements BoardsState {
 
     @Action({ rawError: true })
     public async createNewBoard(newBoard: NewBoard) {
+        const tempBoard = {
+            ...newBoard,
+            id: new Date().valueOf(),
+            userId: 0,
+        };
+
+        this.ADD_BOARD(tempBoard);
+
+        if (user.isGuest) {
+            return;
+        }
+
         const response = await createBoard(newBoard);
-        this.ADD_BOARD(response.data);
+        this.REPLACE_BOARD({ oldId: tempBoard.id, board: response.data });
+
+        return response;
     }
 
     @Action({ rawError: true })
@@ -120,10 +134,11 @@ class Board extends VuexModule implements BoardsState {
     }
 
     @Mutation
-    REPLACE_BOARD(boardId: number, newBoard: BoardsData) {
-        this.byId[newBoard.id] = newBoard;
-        this.allIds[this.allIds.indexOf(newBoard.id)] = newBoard.id;
-        delete this.byId[boardId];
+    REPLACE_BOARD(data: { oldId: number; board: BoardsData }) {
+        const { oldId, board } = data;
+        this.byId = { ...this.byId, [board.id]: board };
+        this.allIds[this.allIds.indexOf(oldId)] = board.id;
+        delete this.byId[oldId];
     }
 
     @Mutation

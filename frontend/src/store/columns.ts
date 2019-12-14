@@ -100,7 +100,7 @@ class Column extends VuexModule implements ColumnsState {
     public async createColumn(data: { title: string; boardId: number }) {
         const { title, boardId } = data;
 
-        const newColumn = {
+        const tempColumn = {
             title,
             id: new Date().valueOf(),
             boardId,
@@ -109,13 +109,14 @@ class Column extends VuexModule implements ColumnsState {
             createdAt: '',
         };
 
-        this.ADD_COLUMN(newColumn);
+        this.ADD_COLUMN(tempColumn);
 
         if (user.isGuest) {
             return;
         }
 
-        const result = await addColumn(newColumn);
+        const result = await addColumn(tempColumn);
+        this.REPLACE_COLUMN({ oldId: tempColumn.id, column: result.data });
 
         return result;
     }
@@ -174,6 +175,14 @@ class Column extends VuexModule implements ColumnsState {
         const uniqueValues = this.allIds.filter(val => !columns.allIds.includes(val));
         this.allIds = [...uniqueValues, ...columns.allIds];
         this.byId = { ...this.byId, ...columns.byId };
+    }
+
+    @Mutation
+    REPLACE_COLUMN(data: { oldId: number; column: ColumnsData }) {
+        const { oldId, column } = data;
+        this.byId = { ...this.byId, [column.id]: column };
+        this.allIds[this.allIds.indexOf(oldId)] = column.id;
+        delete this.byId[oldId];
     }
 }
 
