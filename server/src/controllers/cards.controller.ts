@@ -21,4 +21,13 @@ export class CardsController {
 
         return res.send(cardIds);
     }
+
+    public async update(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+        const { content, color } = req.body;
+        const card = await Card.query()
+            .updateAndFetchById(req.params.id, { content, color })
+            .throwIfNotFound();
+
+        return res.send(card);
+    }
 }

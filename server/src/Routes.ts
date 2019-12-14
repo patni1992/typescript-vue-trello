@@ -44,6 +44,7 @@ export class Routes {
         app.route('/columns/reorder').patch(auth, this.columnsController.reOrder);
 
         app.route('/cards/reorder').patch(auth, this.CardsController.reOrder);
+        app.route('/cards/:id').put(auth, this.CardsController.update);
 
         app.route('/users')
             .get(this.usersController.index)
