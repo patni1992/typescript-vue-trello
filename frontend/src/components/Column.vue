@@ -1,8 +1,6 @@
 <template>
     <div class="column">
         <div :class="`header darken-${color}`">
-            <!-- <h2 class="header-title">{{ truncateString(column.title, 63) }}</h2> -->
-
             <add-item
                 big
                 useHeader

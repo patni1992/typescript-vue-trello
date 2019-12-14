@@ -2,7 +2,7 @@ import axios from 'axios';
 import { UserInfo, UserLogin } from '@/store/user';
 import { BoardsData, NewBoard, UpdateBoard } from '@/store/boards';
 import { ColumnsData, UpdateColumn } from '@/store/columns';
-import { CardsData } from '@/store/cards';
+import { CardsData, UpdateCard } from '@/store/cards';
 
 export const api = axios.create({
     baseURL: 'http://localhost:1337',
@@ -43,6 +43,10 @@ export const updateBoard = (updateBoard: UpdateBoard) => {
 
 export const addCard = (card: CardsData) => {
     return api.post<CardsData>(`/columns/${card.columnId}/cards`, card);
+};
+
+export const updateCard = (card: UpdateCard) => {
+    return api.put<CardsData>(`/cards/${card.id}`, card);
 };
 
 export const reOrderCards = (data: { columnId: number; cardIds: number[] }) => {

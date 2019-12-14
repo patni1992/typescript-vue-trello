@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
 import { formatData, move } from './helpers';
-import { addCard, reOrderCards } from '../api';
+import { addCard, reOrderCards, updateCard } from '../api';
 import store from '@/store';
 import user from './user';
 
@@ -10,6 +10,12 @@ export interface CardsData {
     columnId: number;
     position: number;
     color: string;
+}
+
+export interface UpdateCard {
+    content: string;
+    color: string;
+    id: number;
 }
 
 export interface BoardsState {
@@ -54,6 +60,19 @@ class Card extends VuexModule implements BoardsState {
     REMOVE_CARD(id: number) {
         delete this.byId[id];
         this.allIds = this.allIds.filter(cardId => cardId !== id);
+    }
+
+    @Mutation
+    EDIT_CARD(updatedCard: UpdateCard) {
+        this.byId[updatedCard.id] = { ...this.byId[updatedCard.id], ...updatedCard };
+    }
+
+    @Mutation
+    REPLACE_CARD(data: { oldId: number; card: CardsData }) {
+        const { oldId, card } = data;
+        this.byId = { ...this.byId, [card.id]: card };
+        this.allIds[this.allIds.indexOf(oldId)] = card.id;
+        delete this.byId[oldId];
     }
 
     @Action({ rawError: true })
@@ -108,6 +127,19 @@ class Card extends VuexModule implements BoardsState {
         }
 
         const result = await addCard(newCard);
+
+        return result;
+    }
+
+    @Action({ rawError: true })
+    public async updateCard(updatedCard: UpdateCard) {
+        this.EDIT_CARD(updatedCard);
+
+        if (user.isGuest) {
+            return;
+        }
+
+        const result = await updateCard(updatedCard);
 
         return result;
     }
