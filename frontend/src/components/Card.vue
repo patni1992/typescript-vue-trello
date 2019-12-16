@@ -3,6 +3,7 @@
         <MarkdownRender>{{ card.content }} </MarkdownRender>
     </div>
     <app-input
+        id="edit-card"
         v-click-outside="toggleEdit"
         ref="input"
         @keyup.enter.native.exact.prevent="save"

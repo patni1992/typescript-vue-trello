@@ -18,6 +18,7 @@
             @drop="e => onCardDrop(column.id, e)"
             group-name="col"
             class="cards"
+            non-drag-area-selector="#edit-card"
             :class="`darken-${color}`"
         >
             <draggable v-for="card in cards" :key="card.id">
