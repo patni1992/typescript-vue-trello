@@ -69,7 +69,7 @@ export const columnsWithCards = [
             {
                 id: 4,
                 columnId: 1339,
-                content: `## Techonoliges used \n ![alt text](https://www.docker.com/sites/default/files/social/docker_facebook_share.png) 
+                content: `## Technologies used \n ![alt text](https://www.docker.com/sites/default/files/social/docker_facebook_share.png) 
                 \n ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png)
                 \n ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/TypeScript_Logo_%28Blue%29.svg/640px-TypeScript_Logo_%28Blue%29.svg.png)
   `,
