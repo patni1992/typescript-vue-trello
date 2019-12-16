@@ -8,6 +8,7 @@ services:
     ports:
       - '3000:80'
   api:
+    container_name: trello-board-api
     build:
       dockerfile: Dockerfile.dev
       context: ./server
