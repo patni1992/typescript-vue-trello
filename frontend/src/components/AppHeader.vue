@@ -4,7 +4,7 @@
             <font-awesome-icon :style="{ color: 'white' }" :icon="['far', 'clipboard-list-check']" />
             <h1 class="logo-text">Boards</h1>
         </router-link>
-        <div v-if="isLoggedIn" class="user">
+        <div v-if="isLoggedIn || isGuest" class="user">
             <span id="username">{{ username }}</span>
             <span id="sign-out-icon" @click="logout" class="sign-out">
                 <font-awesome-icon :icon="['far', 'sign-out-alt']" />
@@ -25,6 +25,10 @@ export default class AppHeader extends Vue {
 
     get isLoggedIn() {
         return user.isLoggedIn;
+    }
+
+    get isGuest() {
+        return user.isGuest;
     }
 
     logout() {

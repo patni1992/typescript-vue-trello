@@ -138,13 +138,14 @@ class User extends VuexModule implements UserState {
     public async register(userInfo: UserRegister) {
         const response = await registerUser(userInfo);
 
-        return response
+        return response;
     }
 
     @Action
     public async logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        this.SET_IS_GUEST(false);
         this.SET_TOKEN('');
         delete api.defaults.headers.common.Authorization;
     }

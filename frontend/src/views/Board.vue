@@ -39,7 +39,7 @@ export default class Boards extends Vue {
     padding-top: 1.2rem;
     overflow: auto;
     color: #eee;
-    height: 100%;
+     height: calc(100% - var(--header-height));
     width: 100%;
 }
 
