@@ -20,6 +20,13 @@ export default class Card extends Vue {}
 <style lang="scss">
 // Dont apply scoped, will not affect vue-markdown
 .markdown-render {
+    .contains-task-list {
+        list-style-type: none;
+        padding-left: 0rem;
+    }
+    .task-list-item-checkbox {
+        margin-right: 0.5rem;
+    }
     code {
         white-space: normal;
     }
@@ -29,6 +36,10 @@ export default class Card extends Vue {}
 
     img {
         max-width: 100%;
+    }
+
+    ul, ol, img, p, h1, h2, h3, h4 {
+        padding-bottom: 0.8rem;
     }
 }
 </style>

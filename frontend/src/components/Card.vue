@@ -36,7 +36,7 @@ export default class Card extends Vue {
         this.content = this.card.content;
     }
 
-    toggleEdit() {
+    toggleEdit(e) {
         if (this.editMode) {
             this.editMode = false;
             return;
