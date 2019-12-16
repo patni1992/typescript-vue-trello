@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserInfo, UserLogin } from '@/store/user';
+import { UserInfo, UserLogin, UserRegister } from '@/store/user';
 import { BoardsData, NewBoard, UpdateBoard } from '@/store/boards';
 import { ColumnsData, UpdateColumn } from '@/store/columns';
 import { CardsData, UpdateCard } from '@/store/cards';
@@ -20,6 +20,11 @@ interface ColumnsWithCards extends Omit<ColumnsData, 'cards'> {
 export const loginUser = (userInfo: UserLogin) => {
     return api.post<LoginResponse>('/login', userInfo);
 };
+
+export const registerUser = (userInfo: UserRegister) => {
+    return api.post('/register', userInfo);
+};
+
 
 export const fetchBoards = () => {
     return api.get<BoardsData[]>('/boards');

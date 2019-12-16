@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { loginUser, api } from '@/api';
+import { loginUser, api, registerUser } from '@/api';
 import store from '@/store';
 
 function getToken() {
@@ -40,6 +40,15 @@ export interface UserState extends UserInfo {
 export interface UserLogin {
     username: string;
     password: string;
+}
+
+export interface UserRegister {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
 }
 
 @Module({
@@ -123,6 +132,13 @@ class User extends VuexModule implements UserState {
         this.SET_FIRST_NAME(firstName);
         this.SET_PROFILE_IMAGE(profileImage);
         this.SET_TOKEN(token);
+    }
+
+    @Action({ rawError: true })
+    public async register(userInfo: UserRegister) {
+        const response = await registerUser(userInfo);
+
+        return response
     }
 
     @Action

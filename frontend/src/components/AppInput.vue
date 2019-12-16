@@ -67,6 +67,11 @@ export default class AppInput extends Vue {
         this.$emit('input', this.currentValue);
     }
 
+    @Watch('value')
+    onValueChanged(v: string) {
+        this.currentValue = v
+    }
+
     @Emit()
     input() {}
 }

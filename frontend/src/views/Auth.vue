@@ -39,8 +39,9 @@ export default class Auth extends Vue {
         this.$router.push({ name: 'boards' });
     }
 
-    register() {
-        console.log('register');
+    async register(v) {
+        await user.register(v)
+        this.$snotify.success('Successfully registered, you can now login');
     }
 }
 </script>
