@@ -11,14 +11,30 @@
         <div class="tabs-content">
             <div v-show="!showLogin" id="signup-tab-content" class="active">
                 <form class="signup-form" action="" method="post">
-                    <div :style="{display: 'flex'}">
-                        <app-input v-model="registerForm.firstName" type="text" id="user_firstname" placeholder="First name" />
-                        <app-input v-model="registerForm.lastName" type="text" id="user_lastname" placeholder="Last name" />
+                    <div class="signup-form--names">
+                        <app-input
+                            v-model="registerForm.firstName"
+                            type="text"
+                            id="user_firstname"
+                            placeholder="First name"
+                        />
+                        <app-input
+                            v-model="registerForm.lastName"
+                            type="text"
+                            id="user_lastname"
+                            placeholder="Last name"
+                            class=" right"
+                        />
                     </div>
                     <app-input v-model="registerForm.email" type="email" id="user_email" placeholder="Email" />
                     <app-input v-model="registerForm.username" type="text" id="user_name" placeholder="Username" />
                     <app-input v-model="registerForm.password" type="password" id="user_pass" placeholder="Password" />
-                    <app-input v-model="registerForm.confirmPassword" type="password" id="user_pass_repeat" placeholder="Confirm password" />
+                    <app-input
+                        v-model="registerForm.confirmPassword"
+                        type="password"
+                        id="user_pass_repeat"
+                        placeholder="Confirm password"
+                    />
                     <app-button type="button" @click="registerUser" id="registerButton" variant="primary" expanded>
                         Sign up
                     </app-button>
@@ -93,19 +109,19 @@ export default class LoginForm extends Vue {
         email: '',
         username: '',
         password: '',
-        confirmPassword: ''
-    }
+        confirmPassword: '',
+    };
 
     async registerUser() {
-       await this.register(this.registerForm);
-       this.registerForm = {
+        await this.register(this.registerForm);
+        this.registerForm = {
             firstName: '',
             lastName: '',
             email: '',
             username: '',
             password: '',
-            confirmPassword: ''
-       }
+            confirmPassword: '',
+        };
 
         this.showLogin = true;
     }
@@ -149,7 +165,14 @@ export default class LoginForm extends Vue {
 
 .login-form,
 .signup-form {
-    margin: 3rem 3.5rem;
+    margin: 1.8rem 3.5rem;
+
+    &--names {
+        display: flex;
+        .right {
+            margin-left: 0.6rem;
+        }
+    }
 }
 
 .form-wrap .help-text {

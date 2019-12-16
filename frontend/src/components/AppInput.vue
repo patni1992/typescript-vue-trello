@@ -91,6 +91,7 @@ export default class AppInput extends Vue {
     color: black;
     font-size: 1.6rem;
     border-radius: 0.4rem;
+    margin-bottom: 0.8rem;
 }
 
 .small {
