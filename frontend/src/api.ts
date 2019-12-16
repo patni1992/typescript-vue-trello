@@ -5,7 +5,7 @@ import { ColumnsData, UpdateColumn } from '@/store/columns';
 import { CardsData, UpdateCard } from '@/store/cards';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:1337',
+    baseURL: '/api',
 });
 
 interface LoginResponse {

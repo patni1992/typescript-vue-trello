@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3000:80'
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+      - '5000:5000'
+    environment:
+      - DB_DATABASE
+      - DB_USER
+      - DB_PASSWORD
+      - JWT_KEY
+  client: 
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+      args: 
+        - FONTAWESOME_NPM_AUTH_TOKEN=${FONTAWESOME_NPM_AUTH_TOKEN}
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    ports:
+      - '8080:8080'
+  db: 
+    image: mysql:5.7
+    restart: always
+    expose:
+      - '3306'
+    ports:
+      - '3303:3304'
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_USER}

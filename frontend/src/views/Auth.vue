@@ -10,7 +10,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import FullScreenImage from '@/components/FullScreenImage.vue';
 import LoginForm from '@/components/LoginForm.vue';
-import user from '@/store/user';
+import user, { UserRegister } from '@/store/user';
 
 @Component({
     components: {
@@ -39,8 +39,8 @@ export default class Auth extends Vue {
         this.$router.push({ name: 'boards' });
     }
 
-    async register(v) {
-        await user.register(v)
+    async register(userRegister: UserRegister) {
+        await user.register(userRegister);
         this.$snotify.success('Successfully registered, you can now login');
     }
 }
