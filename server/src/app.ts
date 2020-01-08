@@ -1,5 +1,4 @@
 import * as express from 'express';
-import { PORT } from './constants';
 import { Routes } from './Routes';
 import * as Knex from 'knex';
 import { Model } from 'objection';
@@ -13,6 +12,7 @@ import { logger } from './utils/logger';
 import * as morgan from 'morgan';
 import { objectionErrorHandler } from './middlewares/objectionErrorHandler';
 export const app = express();
+const PORT = process.env.PORT;
 const httpLogger = new HttpLogger();
 const dbENV = process.env.NODE_ENV || 'development';
 

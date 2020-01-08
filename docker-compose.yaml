@@ -22,6 +22,7 @@ services:
       - DB_USER
       - DB_PASSWORD
       - JWT_KEY
+      - PORT
   client: 
     build:
       dockerfile: Dockerfile.dev
@@ -41,7 +42,7 @@ services:
     ports:
       - '3303:3304'
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_USER}
+     - MYSQL_DATABASE=${DB_DATABASE}
+     - MYSQL_USER=${DB_USER}
+     - MYSQL_PASSWORD=${DB_PASSWORD}
+     - MYSQL_ROOT_PASSWORD=${DB_USER}
