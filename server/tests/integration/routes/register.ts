@@ -1,6 +1,6 @@
-import { app, server, knex } from '../../src/app';
+import { app, server, knex } from '../../../src/app';
 import * as request from 'supertest';
-import { User } from '../../src/models/User';
+import { User } from '../../../src/models/User';
 
 beforeEach(async done => {
     await knex.migrate.rollback();
@@ -20,32 +20,11 @@ const userData = {
     email: 'john-d3oe@hotmail.com',
 };
 
-describe('/users', () => {
-    describe('GET index', () => {
-        test('should return list of users', async () => {
-            await User.query().insert(userData);
-
-            const response = await request(app)
-                .get('/users')
-                .expect(200)
-                .expect('Content-Type', /json/);
-
-            expect(response.body).toHaveLength(1);
-            expect(response.body[0]).toMatchObject({
-                firstName: 'John',
-                lastName: 'Doe',
-                username: 'john3-doe',
-                email: 'john-d3oe@hotmail.com',
-            });
-
-            return response;
-        });
-    });
-
-    describe('POST create', () => {
+describe('/register', () => {
+    describe('POST', () => {
         test('Create a new user', async () => {
             const response = await request(app)
-                .post('/users')
+                .post('/register')
                 .send(userData)
                 .expect(201)
                 .expect('Content-Type', /json/);
@@ -61,7 +40,7 @@ describe('/users', () => {
 
         test('Can not create user without correct data', async () => {
             let response = await request(app)
-                .post('/users')
+                .post('/register')
                 .send({})
                 .expect(400);
 
@@ -70,7 +49,7 @@ describe('/users', () => {
             );
 
             response = await request(app)
-                .post('/users')
+                .post('/register')
                 .send({ firstName: 'test', lastName: '3lf' })
                 .expect(400);
 
@@ -79,7 +58,7 @@ describe('/users', () => {
             );
 
             response = await request(app)
-                .post('/users')
+                .post('/register')
                 .send({
                     firstName: 'test',
                     lastName: '3lf',
@@ -102,13 +81,13 @@ describe('/users', () => {
             await User.query().insert(userData);
 
             const existingEmail = await request(app)
-                .post('/users')
+                .post('/register')
                 .send({ ...newUser, email: userData.email, username: 'bob123' })
                 .expect(422);
             expect(existingEmail.body.message).toEqual('Email or Username is already taken');
 
             const existingUserName = await request(app)
-                .post('/users')
+                .post('/register')
                 .send({ ...newUser, username: userData.username, email: 'bob1233343@hotmail.com' })
                 .expect(422);
 

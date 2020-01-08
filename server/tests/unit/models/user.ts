@@ -1,5 +1,5 @@
-import { User } from '../../src/models/User';
-import { Board } from '../../src/models/Board';
+import { User } from '../../../src/models/User';
+import { Board } from '../../../src/models/Board';
 
 const userData = {
     firstName: 'John',

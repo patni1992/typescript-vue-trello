@@ -1,5 +1,5 @@
-import { Board } from '../../src/models/Board';
-import { boardFactory } from '../../db/factories/boardFactory';
+import { Board } from '../../../src/models/Board';
+import { boardFactory } from '../../../db/factories/boardFactory';
 
 describe('Board model', () => {
     test('Throw error if color is not allowed', async () => {
