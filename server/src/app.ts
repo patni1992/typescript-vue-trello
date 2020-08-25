@@ -12,7 +12,7 @@ import { logger } from './utils/logger';
 import * as morgan from 'morgan';
 import { objectionErrorHandler } from './middlewares/objectionErrorHandler';
 export const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const httpLogger = new HttpLogger();
 const dbENV = process.env.NODE_ENV || 'development';
 

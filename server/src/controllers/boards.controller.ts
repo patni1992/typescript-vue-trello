@@ -38,7 +38,7 @@ export class BoardsController {
         const board = await Board.query()
             .findById(req.params.id)
             .allowEager('columns.cards')
-            .eager(req.query.include);
+            .eager(req.query.include!);
 
         res.send(board);
     }

@@ -69,7 +69,7 @@ export default class AppInput extends Vue {
 
     @Watch('value')
     onValueChanged(v: string) {
-        this.currentValue = v
+        this.currentValue = v;
     }
 
     @Emit()

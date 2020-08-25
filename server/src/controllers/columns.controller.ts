@@ -14,7 +14,7 @@ export class ColumnsController {
             .where('board_id', req.query.boardId)
             .orderBy('position')
             .allowEager('cards')
-            .eager(req.query.include);
+            .eager(req.query.include!);
 
         columns.map(column => {
             if (column.cards) {
