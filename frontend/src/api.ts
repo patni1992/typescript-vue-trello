@@ -50,6 +50,10 @@ export const addCard = (card: CardsData) => {
     return api.post<CardsData>(`/columns/${card.columnId}/cards`, card);
 };
 
+export const deleteCard = (id: number) => {
+    return api.delete(`/cards/${id}`);
+};
+
 export const updateCard = (card: UpdateCard) => {
     return api.put<CardsData>(`/cards/${card.id}`, card);
 };

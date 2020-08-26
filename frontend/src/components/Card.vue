@@ -1,22 +1,28 @@
 <template>
-    <div v-if="!editMode" @click="toggleEdit" :class="`card ${card.color}`">
-        <MarkdownRender>{{ card.content }} </MarkdownRender>
+    <div :class="`card ${card.color}`">
+        <div v-if="!editMode" @click="toggleEdit">
+            <MarkdownRender>{{ card.content }} </MarkdownRender>
+        </div>
+        <div v-else>
+            <app-input
+                id="edit-card"
+                v-click-outside="toggleEdit"
+                ref="input"
+                @keyup.enter.native.exact.prevent="save"
+                type="textarea"
+                v-model="content"
+            />
+            <span id="trash-delete"  @click="deleteCard">
+                <font-awesome-icon :icon="['far', 'trash-alt']" />
+            </span>
+        </div>
     </div>
-    <app-input
-        id="edit-card"
-        v-click-outside="toggleEdit"
-        ref="input"
-        @keyup.enter.native.exact.prevent="save"
-        type="textarea"
-        v-model="content"
-        v-else
-    />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import MarkdownRender from './MarkdownRender.vue';
 import AppInput from '@/components/AppInput.vue';
+import MarkdownRender from './MarkdownRender.vue';
 import cards, { CardsData } from '../store/cards';
 
 @Component({
@@ -36,13 +42,17 @@ export default class Card extends Vue {
         this.content = this.card.content;
     }
 
-    toggleEdit(e) {
+    toggleEdit() {
         if (this.editMode) {
             this.editMode = false;
             return;
         }
         this.editMode = true;
         this.$nextTick(() => this.$refs.input.$el.focus());
+    }
+
+    deleteCard() {
+        cards.deleteCard(this.card.id)
     }
 
     save() {
@@ -93,4 +103,5 @@ $card-border-radius: 3px;
         border-top-right-radius: $card-border-radius;
     }
 }
+
 </style>

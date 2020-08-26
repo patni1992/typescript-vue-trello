@@ -1,7 +1,8 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
-import { formatData, move } from './helpers';
-import { addCard, reOrderCards, updateCard } from '../api';
 import store from '@/store';
+import { formatData, move } from './helpers';
+import { addCard, reOrderCards, updateCard, deleteCard } from '../api';
+
 import user from './user';
 
 export interface CardsData {
@@ -142,6 +143,19 @@ class Card extends VuexModule implements BoardsState {
         const result = await updateCard(updatedCard);
 
         return result;
+    }
+
+    @Action({ rawError: true })
+    public async deleteCard(id: number) {
+        this.REMOVE_CARD(id);
+
+        if (user.isGuest) {
+            return;
+        }
+
+         const result = await deleteCard(id);
+
+         return result;
     }
 }
 
