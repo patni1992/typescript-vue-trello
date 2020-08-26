@@ -51,6 +51,7 @@ export class Routes {
 
         router.route('/cards/reorder').patch(auth, this.CardsController.reOrder);
         router.route('/cards/:id').put(auth, this.CardsController.update);
+        router.route('/cards/:id').delete(auth, this.CardsController.delete);
 
         app.use('/', router);
     }

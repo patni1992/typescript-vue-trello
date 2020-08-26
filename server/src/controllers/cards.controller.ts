@@ -30,4 +30,12 @@ export class CardsController {
 
         return res.send(card);
     }
+
+    public async delete(req: ExtendedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+        await Card.query()
+            .deleteById(req.params.id)
+            .throwIfNotFound();
+
+        return res.sendStatus(204);
+    }
 }
