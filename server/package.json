@@ -8,8 +8,8 @@
     "dev": "nodemon src/app.ts",
     "dev:debug": "nodemon --inspect src/app.ts",
     "build": "tsc -p .",
-    "test": "NODE_ENV=test PORT=1337 jest --runInBand --verbose=true",
-    "test:int": "NODE_ENV=test PORT=1337 jest --verbose=true /integration",
+    "test": "NODE_ENV=test PORT=1337 jest --verbose=true",
+    "test:int": "NODE_ENV=test PORT=1337 jest  --runInBand --verbose=true /integration",
     "test:unit": "NODE_ENV=test PORT=1337 jest --verbose=true /unit",
     "test:watch": "npm run test -- --watch"
   },

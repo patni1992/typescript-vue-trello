@@ -44,7 +44,7 @@ export default class AppInput extends Vue {
         if (!this.$refs.textarea) {
             return;
         }
-        const height = this.currentValue.trim() ? this.$refs.textarea.scrollHeight : 120;
+        const height = this.currentValue && this.currentValue.trim() ? this.$refs.textarea.scrollHeight : 120;
         this.inputHeight = `${height}px`;
     }
 
